@@ -1,0 +1,55 @@
+package uz.pdp.audiobook.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import uz.pdp.audiobook.enums.Role;
+
+import java.util.Collection;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@Entity(name = "users")
+
+@SQLRestriction(value = "deleted=false")
+@SQLDelete(sql = ("UPDATE users SET deleted=true WHERE id=?"))
+public class User extends Person implements UserDetails {
+
+    @NotBlank
+    @Email
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @JsonIgnore
+    @NotBlank
+    @Column(nullable = false)
+    //password strong check (8 signs, uppercase letters, digits, ... #,$,% )
+    private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getPermissions()
+                .stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.name()))
+                .toList();
+    }
+
+}
