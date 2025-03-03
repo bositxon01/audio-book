@@ -9,6 +9,8 @@ public interface AuthService extends UserDetailsService {
 
     ApiResult<String> register(RegisterDTO registerDTO);
 
+    ApiResult<String> confirm(String email, String code);
+
     ApiResult<String> login(LoginDTO loginDTO);
 
     ApiResult<String> forgetPassword(String email);
