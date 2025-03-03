@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: audio-book
+  datasource:
+    url: jdbc:postgresql://localhost:5432/audio_book
+    username: postgres
+    password: 123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: croni075@gmail.com
+    password: rkav vxni npzz gyis
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+app:
+  files:
+    baseFolder: files/
+
+jwt:
+  expirationDate: 1
+  secretKey: '1d70f041af6754cf79657d04732dff0585301792a86b67ccc96509f05ba2cb13ec850a7afec1cbb275a3b85296edc14afd8aeeb52609e03d8803a9112546413126f7cf96cc27bbcbd5a18285afb5ad8b56b957d0d487496e0aec11c70f2819c1b3c92c95c4ab7edd285496a873695d581edebb0f994986497bda54b79b1891f0d31dbac050756adfad6d4e85211704185af5961caf5f91c89f3e3c043db6230e4abff088623b026a906d40a4f0cb1327aa0725eeba83e1f4a6102032f48fbfb4b9e15d91492e75ad64189f82f7fdbc32626e0856a1e207d5654355c2b776267dd0c03c5163cf1425f760692d605764b0ba9e5e227d3a5dd34ddb0b85729aec4f'
+
+server:
+  address: 0.0.0.0
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: swagger-ui
