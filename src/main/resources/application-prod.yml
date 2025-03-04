@@ -12,7 +12,7 @@ spring:
     show-sql: true
   mail:
     host: smtp.gmail.com
-    port: 465
+    port: 587
     username: croni075@gmail.com
     password: rtrf efzz pmme tkmp
     protocol: smtp
@@ -21,10 +21,10 @@ spring:
         smtp:
           auth: true
           starttls:
-            enable: false
-          ssl:
             enable: true
-  servlet:
+          ssl:
+            enable: false
+    servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
