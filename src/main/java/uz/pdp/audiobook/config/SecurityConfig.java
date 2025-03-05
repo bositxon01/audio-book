@@ -3,8 +3,6 @@ package uz.pdp.audiobook.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -78,8 +76,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /*@Bean
-    public JavaMailSender mailSender() {
-        return new JavaMailSenderImpl();
-    }*/
 }
