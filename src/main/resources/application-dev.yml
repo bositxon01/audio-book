@@ -12,17 +12,15 @@ spring:
     show-sql: true
   mail:
     host: smtp.gmail.com
-    port: 465
     username: croni075@gmail.com
     password: rtrf efzz pmme tkmp
+    port: 587
     protocol: smtp
     properties:
       mail:
         smtp:
           auth: true
           starttls:
-            enable: false
-          ssl:
             enable: true
   servlet:
     multipart:
@@ -45,3 +43,9 @@ springdoc:
     enabled: true
   swagger-ui:
     path: swagger-ui
+
+email:
+  host: 'smtp.gmail.com'
+  port: 587
+  sender: croni075@gmail.com
+  password: rtrf efzz pmme tkmp

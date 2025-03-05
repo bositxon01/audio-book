@@ -30,6 +30,13 @@ public class AuthController {
         return ResponseEntity.ok(login);
     }
 
+    @PostMapping("/confirm")
+    public ResponseEntity<ApiResult<String>> confirm(@RequestParam String email,
+                                                     @RequestParam String code) {
+        ApiResult<String> confirm = authService.confirm(email, code);
+        return ResponseEntity.ok(confirm);
+    }
+
     @PostMapping("/forget-password")
     public ResponseEntity<ApiResult<String>> forgetPassword(@RequestParam String email) {
         ApiResult<String> forgetPassword = authService.forgetPassword(email);
@@ -43,6 +50,5 @@ public class AuthController {
         ApiResult<String> resetPassword = authService.resetPassword(email, code, newPassword);
         return ResponseEntity.ok(resetPassword);
     }
-
 
 }
