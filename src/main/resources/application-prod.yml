@@ -12,9 +12,9 @@ spring:
     show-sql: true
   mail:
     host: smtp.gmail.com
+    port: 587
     username: croni075@gmail.com
     password: rtrf efzz pmme tkmp
-    port: 587
     protocol: smtp
     properties:
       mail:
@@ -22,7 +22,9 @@ spring:
           auth: true
           starttls:
             enable: true
-  servlet:
+          ssl:
+            enable: false
+    servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
@@ -43,9 +45,3 @@ springdoc:
     enabled: true
   swagger-ui:
     path: swagger-ui
-
-email:
-  host: 'smtp.gmail.com'
-  port: 587
-  sender: croni075@gmail.com
-  password: rtrf efzz pmme tkmp
