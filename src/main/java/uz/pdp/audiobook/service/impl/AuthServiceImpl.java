@@ -18,12 +18,12 @@ import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.security.JWTProvider;
 import uz.pdp.audiobook.service.AuthService;
 import uz.pdp.audiobook.service.EmailService;
-import uz.pdp.audiobook.utils.VerificationCodeGenerator;
 import uz.pdp.audiobook.utils.VerificationInfo;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+
+import static uz.pdp.audiobook.utils.VerificationCodeGenerator.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +35,9 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final Map<String, VerificationInfo> verificationData;
 
-    private final Map<String, VerificationInfo> verificationData = new ConcurrentHashMap<>();
-    private static final Integer EXPIRY_TIME = 60_000;
+    private static final Integer EXPIRY_TIME = 120_000;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,7 +48,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ApiResult<String> register(RegisterDTO registerDTO) {
 
-        if (userRepository.existsByUsernameAndDeletedFalse(registerDTO.getUsername()))
+        String username = registerDTO.getUsername();
+
+        if (userRepository.existsByUsernameAndDeletedFalse(username))
             return ApiResult.error("Username already in use");
 
         User user = userMapper.toEntity(registerDTO);
@@ -56,9 +58,9 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
 
-        String verificationCode = VerificationCodeGenerator.generateVerificationCode();
+        String verificationCode = generateVerificationCode();
 
-        verificationData.put(registerDTO.getUsername(),
+        verificationData.put(username,
                 VerificationInfo.builder()
                         .user(user)
                         .code(verificationCode)
@@ -67,9 +69,13 @@ public class AuthServiceImpl implements AuthService {
                         .build()
         );
 
-        emailService.sendVerificationEmail(registerDTO.getUsername(), verificationCode);
+        emailService.sendEmail(
+                username,
+                verificationCode,
+                "Email Verification",
+                "Your verification code is: " + verificationCode);
 
-        return ApiResult.success("Verification code sent to " + registerDTO.getUsername());
+        return ApiResult.success("Verification code sent to " + username);
     }
 
     @Override
@@ -134,7 +140,13 @@ public class AuthServiceImpl implements AuthService {
         );
 
         String resetLink = "http://localhost:8080/api/auth/reset-password?token=" + resetToken + "&username=" + username;
-        emailService.sendVerificationEmail(username, "Click the link to reset your password: " + resetLink);
+
+        emailService.sendEmail(
+                username,
+                resetLink,
+                "Reset password link",
+                "Click the link to reset your password: " + resetLink);
+
 
         return ApiResult.success("Password reset link sent to " + username);
     }

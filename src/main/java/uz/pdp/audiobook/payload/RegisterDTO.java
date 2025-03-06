@@ -10,6 +10,7 @@ import java.sql.Date;
 @Setter
 @ToString
 public class RegisterDTO {
+
     private String username;
 
     private String password;
@@ -19,4 +20,5 @@ public class RegisterDTO {
     private String lastName;
 
     private Date dateOfBirth;
+
 }

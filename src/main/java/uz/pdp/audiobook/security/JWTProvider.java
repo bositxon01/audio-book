@@ -9,8 +9,6 @@ import uz.pdp.audiobook.entity.User;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class JWTProvider {
