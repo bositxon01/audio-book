@@ -4,11 +4,11 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/audio_book
     username: postgres
-    password: 123
+    password: root123
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
   mail:
     host: smtp.gmail.com
