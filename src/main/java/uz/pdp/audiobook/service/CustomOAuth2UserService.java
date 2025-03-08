@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -12,12 +13,20 @@ import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.security.JWTProvider;
 import uz.pdp.audiobook.utils.PasswordGenerator;
 
+import java.sql.Date;
+
 @Service
-@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final JWTProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
+
+    public CustomOAuth2UserService(UserRepository userRepository, JWTProvider jwtProvider, @Lazy PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.jwtProvider = jwtProvider;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -34,11 +43,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = userRepository.findByUsernameAndDeletedFalse(email)
                 .orElseGet(() -> {
                     User newUser = new User();
+
+                    String password = PasswordGenerator.generateRandomPassword();
                     newUser.setUsername(email);
-                    newUser.setPassword(PasswordGenerator.generateRandomPassword());
+                    newUser.setPassword(passwordEncoder.encode(password));
                     newUser.setRole(Role.USER);
-                    newUser.setFirstName(firstName);
-                    newUser.setLastName(lastName);
+                    newUser.setFirstName(firstName != null ? firstName : "Unknown");
+                    newUser.setLastName(lastName != null ? lastName : "Unknown");
+                    newUser.setDateOfBirth(Date.valueOf("2000-01-01"));
                     return userRepository.save(newUser);
                 });
 

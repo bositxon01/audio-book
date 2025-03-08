@@ -36,14 +36,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = oAuth2User.getAttribute("email");
-        String firstName = oAuth2User.getAttribute("given_name"); // Given Name from Google
-        String lastName = oAuth2User.getAttribute("family_name"); // Family Name from Google
+        String firstName = oAuth2User.getAttribute("given_name");
+        String lastName = oAuth2User.getAttribute("family_name");
 
         if (email == null) {
             throw new IllegalStateException("Email not found in OAuth provider response");
         }
 
-        // Find or create user
         User user = userRepository.findByUsernameAndDeletedFalse(email)
                 .orElseGet(() -> {
                     User newUser = new User();
@@ -59,10 +58,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     return userRepository.save(newUser);
                 });
 
-        // Generate JWT Token
         String jwtToken = jwtProvider.generateToken(user);
 
-        // Return JSON response instead of redirect
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -72,6 +69,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(responseBody));
+
+        /*
+        Redirect to frontend with token
+        response.sendRedirect("http://localhost:3000/oauth-success?token=" + jwtToken);
+         */
     }
 
 }
