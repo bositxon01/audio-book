@@ -39,10 +39,10 @@ public class User extends Person implements UserDetails {
     @NotBlank
     @Column(nullable = false)
     @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
-            message = "Password must be at least 8 characters long, contain at least one uppercase letter, one digit, and one special character (@#$%^&+=!)"
+            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
+            message = "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character (@#$%^&+=!)"
     )
-   private String password;
+    private String password;
 
     @NotNull
     @Enumerated(EnumType.STRING)

@@ -22,6 +22,17 @@ spring:
           auth: true
           starttls:
             enable: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 173114507828-2ofob5mbkon5a5mbn625s34l9i0tnoju.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile, email, openid
+          github:
+            client-id: Ov23liScwJv3PxbB3MRi
+            client-secret: 5b64e6a0b2dfcbb0c1ecd97cd1d0710272b11f75
   servlet:
     multipart:
       max-file-size: 100MB
