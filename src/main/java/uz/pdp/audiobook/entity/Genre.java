@@ -8,11 +8,12 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class Genre extends AbsIntegerEntity {
 
+    @ToString.Include
     @Column(unique = true, nullable = false, length = 50)
     private String name; // Janr nomi
-
 }

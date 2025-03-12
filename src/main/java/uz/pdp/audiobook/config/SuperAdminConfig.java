@@ -28,7 +28,7 @@ public class SuperAdminConfig {
             user.setUsername(SUPER_ADMIN_GMAIL);
             user.setPassword(passwordEncoder.encode(SUPER_PASSWORD));
             user.setRole(Role.SUPER_ADMIN);
-            user.setDateOfBirth(Date.valueOf(LocalDate.of(1990, 1, 1)));
+            user.setDateOfBirth(Date.valueOf(LocalDate.of(1990, 1, 1)).toLocalDate());
             user.setFirstName(SUPER_ADMIN);
             user.setLastName(SUPER_ADMIN);
             userRepository.save(user);

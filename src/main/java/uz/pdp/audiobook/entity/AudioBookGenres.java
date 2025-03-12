@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"audiobook", "genre"})
 @Entity
 public class AudioBookGenres extends AbsIntegerEntity {
 

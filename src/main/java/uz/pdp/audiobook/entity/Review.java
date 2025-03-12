@@ -11,23 +11,25 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true, exclude = {"user", "audiobook"})
 @Entity
 public class Review extends AbsIntegerEntity {
 
     @ManyToOne
-    private User user; // Foydalanuvchi bilan bog‘lash
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    private Audiobook audiobook; // Audiokitob bilan bog‘lash
+    @JoinColumn(name = "audiobook_id", nullable = false)
+    private Audiobook audiobook;
 
     @NotBlank
     @Column(nullable = false, length = 1000)
-    private String content; // Review matni (bo‘sh bo‘lmasligi kerak)
+    private String content;
 
     @NotNull
     @Min(1)
     @Max(5)
-    @Column(nullable = false)
-    private Integer rating; // Rating (1 dan 5 gacha)
+    @Column(nullable = false, columnDefinition = "SMALLINT")
+    private Integer rating;
 }

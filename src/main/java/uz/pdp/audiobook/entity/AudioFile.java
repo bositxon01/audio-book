@@ -7,19 +7,19 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "audiobook")
 @Entity
 public class AudioFile extends AbsIntegerEntity {
 
     @ManyToOne
-    private Audiobook audiobook;
+    private Audiobook audiobook; // Audiokitob bilan bog‘lash
 
     @Column(nullable = false)
-    private String fileUrl;
+    private String fileUrl; // Fayl URL
 
     @Column(nullable = false)
-    private Integer partNumber;
+    private Integer partNumber; // Qism tartib raqami
 
     @Column(nullable = false)
-    private Integer durationSeconds;
+    private Integer durationSeconds; // Qismning davomiyligi (sekundlarda)
 }

@@ -1,10 +1,7 @@
 package uz.pdp.audiobook.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,16 +15,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import uz.pdp.audiobook.enums.Role;
 
 import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "password") // Parolni chiqarib yuborish
 @Entity(name = "users")
 
-@SQLRestriction(value = "deleted=false")
-@SQLDelete(sql = ("UPDATE users SET deleted=true WHERE id=?"))
+@SQLRestriction(value = "deleted = false")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
 public class User extends Person implements UserDetails {
 
     @NotBlank
@@ -56,4 +54,23 @@ public class User extends Person implements UserDetails {
                 .toList();
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Hisob muddati tugaganligini tekshirish
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Hisob bloklanganligini tekshirish
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Parol eskirganligini tekshirish
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !isDeleted(); // Agar foydalanuvchi o'chirilmagan bo'lsa, true qaytaradi
+    }
 }

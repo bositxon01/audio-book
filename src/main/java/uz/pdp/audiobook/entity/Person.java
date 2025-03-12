@@ -3,16 +3,17 @@ package uz.pdp.audiobook.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @MappedSuperclass
 public abstract class Person extends AbsIntegerEntity {
 
@@ -24,8 +25,8 @@ public abstract class Person extends AbsIntegerEntity {
     @Column(nullable = false)
     private String lastName;
 
-    @Past
+    @NotNull(message = "Date of birth cannot be null")
+    @Past(message = "Date of birth must be in the past")
     @Column(nullable = false)
-    private Date dateOfBirth;
-
+    private LocalDate dateOfBirth;
 }

@@ -7,13 +7,17 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"playlist", "audiobook"})
 @Entity
+@Table(name = "playlist_audiobooks",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"playlist_id", "audiobook_id"}))
 public class PlaylistAudiobooks extends AbsIntegerEntity {
 
     @ManyToOne
-    private Playlist playlist; // `Playlist` bilan bog‘lash
+    @JoinColumn(name = "playlist_id", nullable = false)
+    private Playlist playlist; // Playlist bilan bog‘lash
 
     @ManyToOne
-    private Audiobook audiobook; // `Audiobook` bilan bog‘lash
+    @JoinColumn(name = "audiobook_id", nullable = false)
+    private Audiobook audiobook; // Audiobook bilan bog‘lash
 }

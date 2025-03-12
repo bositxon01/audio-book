@@ -7,13 +7,13 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"author", "audiobook"})
 @Entity
 public class AudioBookAuthors extends AbsIntegerEntity {
 
     @ManyToOne
-    private Author author; // `Author` bilan bog‘lash
+    private Author author; // Muallif bilan bog‘lash
 
     @ManyToOne
-    private Audiobook audiobook; // `Audiobook` bilan bog‘lash
+    private Audiobook audiobook; // Audiokitob bilan bog‘lash
 }

@@ -5,8 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,12 +18,13 @@ public abstract class AbsIntegerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(updatable = false)
     @CreationTimestamp
-    private Timestamp created_at;
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private Timestamp updated_at;
+    private LocalDateTime updatedAt;
 
-    private boolean deleted;
+    @Column(nullable = false)
+    private boolean deleted = false;
 }

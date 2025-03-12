@@ -1,6 +1,8 @@
 package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -9,23 +11,27 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true, exclude = {"user", "audiobook"})
 @Entity
+@Table(name = "listening_history")
 public class ListeningHistory extends AbsIntegerEntity {
 
     @ManyToOne
-    private User user; // `Integer user_id` o‘rniga `User user`
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    private Audiobook audiobook; // `Integer audiobook_id` o‘rniga `Audiobook audiobook`
+    @JoinColumn(name = "audiobook_id", nullable = false)
+    private Audiobook audiobook;
+
+    @Column(nullable = false, updatable = false)
+    private Timestamp lastListeningTime;
+
+    @Min(0)
+    @Max(100)
+    @Column(nullable = false)
+    private Integer progressPercentage;
 
     @Column(nullable = false)
-    private Timestamp lastListeningTime; // `last_listening_time` → `lastListeningTime` qilib o‘zgartirildi
-
-    @Column(nullable = false)
-    private Integer progressPercentage; // `progress` → `progressPercentage` qilib aniqroq nom berildi
-
-    @Column(nullable = false)
-    private boolean completed; // `completed` maydoni saqlab qolindi
-
+    private boolean completed;
 }

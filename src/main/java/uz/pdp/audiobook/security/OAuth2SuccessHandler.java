@@ -53,7 +53,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                     newUser.setPassword(passwordEncoder.encode(password)); // Ensure password is not blank
                     newUser.setFirstName(firstName != null ? firstName : "Unknown");
                     newUser.setLastName(lastName != null ? lastName : "Unknown");
-                    newUser.setDateOfBirth(Date.valueOf("2000-01-01"));
+                    newUser.setDateOfBirth(Date.valueOf("2000-01-01").toLocalDate());
                     newUser.setRole(Role.USER);
 
                     return userRepository.save(newUser);
