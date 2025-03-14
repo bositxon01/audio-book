@@ -13,7 +13,6 @@ import lombok.*;
 @Entity
 public class Author extends Person {
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String biography;
 
