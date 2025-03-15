@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/audio_book
     username: postgres
-    password: root123
+    password: 123
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
