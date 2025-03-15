@@ -9,11 +9,11 @@ public interface AuthorService {
 
     ApiResult<AuthorDTO> createAuthor(AuthorDTO authorDTO);
 
-    ApiResult<AuthorDTO> getAuthor(Long id);
+    ApiResult<AuthorDTO> getAuthor(Integer id);
 
     ApiResult<List<AuthorDTO>> getAllAuthors();
 
-    ApiResult<AuthorDTO> updateAuthor(Long id, AuthorDTO authorDTO);
+    ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDTO authorDTO);
 
-    ApiResult<Object> deleteAuthor(Long id);
+    ApiResult<Object> deleteAuthor(Integer id);
 }

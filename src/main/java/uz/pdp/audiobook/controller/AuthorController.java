@@ -23,7 +23,7 @@ public class AuthorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResult<AuthorDTO>> getAuthor(@PathVariable Long id) {
+    public ResponseEntity<ApiResult<AuthorDTO>> getAuthor(@PathVariable Integer id) {
         ApiResult<AuthorDTO> result = authorService.getAuthor(id);
         return ResponseEntity.ok(result);
     }
@@ -35,13 +35,13 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResult<AuthorDTO>> updateAuthor(@PathVariable Long id, @RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<ApiResult<AuthorDTO>> updateAuthor(@PathVariable Integer id, @RequestBody AuthorDTO authorDTO) {
         ApiResult<AuthorDTO> result = authorService.updateAuthor(id, authorDTO);
         return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResult<Object>> deleteAuthor(@PathVariable Long id) {
+    public ResponseEntity<ApiResult<Object>> deleteAuthor(@PathVariable Integer id) {
         ApiResult<Object> result = authorService.deleteAuthor(id);
         return ResponseEntity.ok(result);
     }
