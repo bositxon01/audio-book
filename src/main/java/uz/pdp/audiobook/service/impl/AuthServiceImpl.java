@@ -189,16 +189,4 @@ public class AuthServiceImpl implements AuthService {
         return ApiResult.success("Password reset successful. You can now log in with your new password.");
     }
 
-    public ApiResult<String> loginWithOAuth2(OAuth2AuthenticationToken authToken) {
-        OAuth2User oauth2User = authToken.getPrincipal();
-        String email = oauth2User.getAttribute("email");
-
-        User user = userRepository.findByUsernameAndDeletedFalse(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + email));
-
-        String token = jwtProvider.generateToken(user);
-        return ApiResult.success(token);
-    }
-
-
 }

@@ -14,13 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import uz.pdp.audiobook.security.OAuth2SuccessHandler;
 import uz.pdp.audiobook.security.SecurityFilter;
 import uz.pdp.audiobook.service.AuthService;
-import uz.pdp.audiobook.service.CustomOAuth2UserService;
 
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -29,14 +26,10 @@ public class SecurityConfig {
 
     private final AuthService authService;
     private final SecurityFilter securityFilter;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    public SecurityConfig(@Lazy AuthService authService, @Lazy SecurityFilter securityFilter, CustomOAuth2UserService customOAuth2UserService, OAuth2SuccessHandler oAuth2SuccessHandler) {
+    public SecurityConfig(@Lazy AuthService authService, @Lazy SecurityFilter securityFilter) {
         this.authService = authService;
         this.securityFilter = securityFilter;
-        this.customOAuth2UserService = customOAuth2UserService;
-        this.oAuth2SuccessHandler = oAuth2SuccessHandler;
     }
 
     @Bean
@@ -49,6 +42,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(conf ->
                         conf
                                 .requestMatchers(
+                                        "/",
+                                        "/login/**",
                                         "/api/auth/**",
                                         "/api-docs/**",
                                         "/swagger-ui/**",
@@ -58,21 +53,10 @@ public class SecurityConfig {
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())
-                .oauth2Login(oauth -> oauth
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-                        .successHandler(oAuth2SuccessHandler)
-                )
-                .logout(logout -> logout.logoutSuccessUrl("/")
-                        .permitAll());
-
-        /*http.oauth2Login(oauth -> oauth
-                .loginProcessingUrl("/api/auth/oauth2/login")
-                .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-                .successHandler(oAuth2SuccessHandler)
-        );*/
+                .oauth2Login(Customizer.withDefaults())
+                .formLogin(Customizer.withDefaults());
 
         http.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
