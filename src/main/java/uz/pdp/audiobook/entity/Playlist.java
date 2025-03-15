@@ -2,6 +2,7 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class Playlist extends AbsIntegerEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false, length = 255, unique = true)
-    private String playlistName;
+    @Column(nullable = false, unique = true)
+    private String name;
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlaylistAudiobooks> audiobooks;

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 import java.sql.Timestamp;
 

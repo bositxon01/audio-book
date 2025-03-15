@@ -2,12 +2,13 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"audiobook", "genre"})
+@ToString //(exclude = {"audiobook", "genre"})
 @Entity
 public class AudioBookGenres extends AbsIntegerEntity {
 

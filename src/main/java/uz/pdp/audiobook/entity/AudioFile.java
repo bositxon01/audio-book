@@ -2,6 +2,7 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +22,5 @@ public class AudioFile extends AbsIntegerEntity {
     private Integer partNumber; // Qism tartib raqami
 
     @Column(nullable = false)
-    private Integer durationSeconds; // Qismning davomiyligi (sekundlarda)
+    private Integer duration; // Qismning davomiyligi (sekundlarda)
 }

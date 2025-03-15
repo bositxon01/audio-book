@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,16 +17,12 @@ public class Audiobook extends AbsIntegerEntity {
     @Column(nullable = false, unique = true)
     private String title;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
-    private Author author;
 
-    @Min(1)
     @Column(nullable = false)
-    private Integer durationMinutes;
+    private Integer duration;
 
     @URL
     private String coverUrl;

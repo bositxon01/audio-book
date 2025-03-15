@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Lob;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.Person;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +14,6 @@ import lombok.*;
 @Entity
 public class Author extends Person {
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String biography;
 
