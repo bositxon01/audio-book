@@ -12,12 +12,12 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
-    public void sendVerificationEmail(String to, String code) {
+    public void sendEmail(String to, String code, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setTo(to);
-        message.setSubject("Email Verification");
-        message.setText("Your verification code is: " + code);
+        message.setSubject(subject);
+        message.setText(text);
 
         mailSender.send(message);
     }
