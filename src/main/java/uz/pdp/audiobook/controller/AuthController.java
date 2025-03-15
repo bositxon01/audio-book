@@ -41,6 +41,11 @@ public class AuthController {
         return Map.of("success", false, "message", "OAuth user not found in context");
     }
 
+    /*@GetMapping("/oauth2/login")
+    public ResponseEntity<String> oauthLogin() {
+        return ResponseEntity.ok("OAuth2 login initiated. Redirect to provider.");
+    }*/
+
     @PostMapping("/register")
     public ResponseEntity<ApiResult<String>> register(@Valid @RequestBody RegisterDTO registerDTO) {
         ApiResult<String> register = authService.register(registerDTO);

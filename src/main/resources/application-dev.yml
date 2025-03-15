@@ -33,6 +33,15 @@ spring:
           github:
             client-id: Ov23liScwJv3PxbB3MRi
             client-secret: 5b64e6a0b2dfcbb0c1ecd97cd1d0710272b11f75
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
   servlet:
     multipart:
       max-file-size: 100MB

@@ -47,22 +47,29 @@ public class SecurityConfig {
         http.userDetailsService(authService);
 
         http.authorizeHttpRequests(conf ->
-                conf
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html/**",
-                                "/swagger-resources/**",
-                                "/webjars/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated());
+                        conf
+                                .requestMatchers(
+                                        "/api/auth/**",
+                                        "/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html/**",
+                                        "/swagger-resources/**",
+                                        "/webjars/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
+                )
+                .logout(logout -> logout.logoutSuccessUrl("/")
+                        .permitAll());
 
-        http.oauth2Login(oauth -> oauth
+        /*http.oauth2Login(oauth -> oauth
+                .loginProcessingUrl("/api/auth/oauth2/login")
                 .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                 .successHandler(oAuth2SuccessHandler)
-        );
+        );*/
 
         http.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 

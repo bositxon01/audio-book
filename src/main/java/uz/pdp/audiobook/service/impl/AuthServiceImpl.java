@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.enums.Role;
@@ -186,5 +188,17 @@ public class AuthServiceImpl implements AuthService {
 
         return ApiResult.success("Password reset successful. You can now log in with your new password.");
     }
+
+    public ApiResult<String> loginWithOAuth2(OAuth2AuthenticationToken authToken) {
+        OAuth2User oauth2User = authToken.getPrincipal();
+        String email = oauth2User.getAttribute("email");
+
+        User user = userRepository.findByUsernameAndDeletedFalse(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + email));
+
+        String token = jwtProvider.generateToken(user);
+        return ApiResult.success(token);
+    }
+
 
 }
