@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: croni075@gmail.com
-    password: rkav vxni npzz gyis
+    password: rtrf efzz pmme tkmp
     protocol: smtp
     properties:
       mail:
