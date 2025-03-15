@@ -1,0 +1,70 @@
+package uz.pdp.audiobook.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import uz.pdp.audiobook.entity.Genre;
+import uz.pdp.audiobook.mapper.GenreMapper;
+import uz.pdp.audiobook.payload.ApiResult;
+import uz.pdp.audiobook.payload.GenreDTO;
+import uz.pdp.audiobook.repository.GenreRepository;
+import uz.pdp.audiobook.service.GenreService;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class GenreServiceImpl implements GenreService {
+
+    private final GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
+
+    @Override
+    public ApiResult<GenreDTO> createGenre(GenreDTO genreDTO) {
+        Genre genre = genreMapper.toEntity(genreDTO);
+        genreRepository.save(genre);
+        return ApiResult.success(genreMapper.toDto(genre));
+    }
+
+    @Override
+    public ApiResult<GenreDTO> getGenre(Integer id) {
+        return genreRepository.findByIdAndDeletedFalse(id)
+                .map(genreMapper::toDto)
+                .map(ApiResult::success)
+                .orElse(ApiResult.error("Genre not found with id " + id));
+    }
+
+    @Override
+    public ApiResult<List<GenreDTO>> getAllGenre() {
+        List<GenreDTO> genres = genreRepository.findByDeletedFalse().stream()
+                .map(genreMapper::toDto)
+                .collect(Collectors.toList());
+        return ApiResult.success(genres);
+    }
+
+    @Override
+    public ApiResult<GenreDTO> updateGenre(Integer id, GenreDTO genreDTO) {
+        return genreRepository.findByIdAndDeletedFalse(id)
+                .map(existingGenre -> {
+                    genreMapper.updateGenreFromDto(genreDTO, existingGenre);
+                    genreRepository.save(existingGenre);
+                    return ApiResult.success(genreMapper.toDto(existingGenre));
+                }).orElse(ApiResult.error("Genre not found with id: " + id));
+    }
+
+    @Override
+    public ApiResult<Object> deleteGenre(Integer id) {
+        Optional<Genre> optionalGenre = genreRepository.findByIdAndDeletedFalse(id);
+
+        if (optionalGenre.isEmpty()) {
+            return ApiResult.error("Genre not found with id: " + id);
+        }
+
+        Genre genre = optionalGenre.get();
+        genre.setDeleted(true);
+        genreRepository.save(genre);
+
+        return ApiResult.success("Genre deleted successfully.");
+    }
+}
