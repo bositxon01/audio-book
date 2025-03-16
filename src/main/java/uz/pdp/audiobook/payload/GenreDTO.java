@@ -10,6 +10,8 @@ import lombok.*;
 @Data
 public class GenreDTO {
 
+    private Integer id;
+
     @Column(unique = true, nullable = false, length = 50)
     private String name;
 
