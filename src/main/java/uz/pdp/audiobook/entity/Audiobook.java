@@ -1,8 +1,6 @@
 package uz.pdp.audiobook.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
@@ -29,5 +27,9 @@ public class Audiobook extends AbsIntegerEntity {
 
     @ManyToOne
     private Category category;
+
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY)
+    private Attachment attachment;
 
 }
