@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class AuthorDTO {
+
+    private Integer id;
+
     @NotBlank(message = "First name cannot be empty")
     private String firstName;
 
