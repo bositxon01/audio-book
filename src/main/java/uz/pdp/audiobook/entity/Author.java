@@ -2,8 +2,8 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Lob;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.Person;
 
 @AllArgsConstructor
 @NoArgsConstructor

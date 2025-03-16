@@ -1,5 +1,6 @@
 package uz.pdp.audiobook.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/genre")
 @RequiredArgsConstructor
+@Tag(name = "Genre API", description = "Genre CRUD API")
 public class GenreController {
 
     private final GenreService genreService;
@@ -35,7 +37,8 @@ public class GenreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResult<GenreDTO>> updateGenre(@PathVariable Integer id, @RequestBody GenreDTO genreDTO) {
+    public ResponseEntity<ApiResult<GenreDTO>> updateGenre(@PathVariable Integer id,
+                                                           @RequestBody GenreDTO genreDTO) {
         ApiResult<GenreDTO> result = genreService.updateGenre(id, genreDTO);
         return ResponseEntity.ok(result);
     }

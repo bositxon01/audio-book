@@ -1,5 +1,6 @@
 package uz.pdp.audiobook.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/authors")
 @RequiredArgsConstructor
+@Tag(name = "Author API", description = "Author CRUD API")
 public class AuthorController {
 
     private final AuthorService authorService;

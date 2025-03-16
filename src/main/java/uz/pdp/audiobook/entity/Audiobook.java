@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
 @NoArgsConstructor

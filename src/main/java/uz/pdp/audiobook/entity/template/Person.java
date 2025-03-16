@@ -1,4 +1,4 @@
-package uz.pdp.audiobook.entity;
+package uz.pdp.audiobook.entity.template;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
