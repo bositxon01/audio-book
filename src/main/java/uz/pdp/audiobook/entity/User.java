@@ -12,10 +12,10 @@ import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import uz.pdp.audiobook.entity.template.Person;
 import uz.pdp.audiobook.enums.Role;
 
 import java.util.Collection;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,11 +26,14 @@ import java.util.List;
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+
+@Table(name = "users",
+        uniqueConstraints = @UniqueConstraint(name = "unique_active_users_usernames", columnNames = {"username", "deleted"}))
 public class User extends Person implements UserDetails {
 
     @NotBlank
     @Email
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String username;
 
     @JsonIgnore

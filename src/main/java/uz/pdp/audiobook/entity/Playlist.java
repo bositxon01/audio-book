@@ -2,6 +2,7 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 import java.util.List;
 
