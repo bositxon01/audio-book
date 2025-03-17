@@ -17,4 +17,5 @@ public class AudioBookAuthors extends AbsIntegerEntity {
 
     @ManyToOne
     private Audiobook audiobook; // Audiokitob bilan bog‘lash
+
 }

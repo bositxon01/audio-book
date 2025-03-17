@@ -17,4 +17,5 @@ public class AudioBookGenres extends AbsIntegerEntity {
 
     @ManyToOne
     private Genre genre; // Janr bilan bog‘lash
+
 }

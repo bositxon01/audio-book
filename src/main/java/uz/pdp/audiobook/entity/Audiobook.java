@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.validator.constraints.URL;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -31,5 +33,9 @@ public class Audiobook extends AbsIntegerEntity {
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     private Attachment attachment;
+
+    @OneToMany(mappedBy = "audiobook", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<AudioFile> audioFiles;
 
 }

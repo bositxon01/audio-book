@@ -3,6 +3,7 @@ package uz.pdp.audiobook.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,11 @@ public class AttachmentController {
     public ResponseEntity<ApiResult<AttachmentDTO>> getAttachment(@PathVariable Integer id) {
         ApiResult<AttachmentDTO> apiResult = attachmentService.getAttachment(id);
         return ResponseEntity.ok(apiResult);
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> download(@PathVariable Integer id) {
+        return attachmentService.download(id);
     }
 
 }

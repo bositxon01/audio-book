@@ -23,4 +23,5 @@ public class Playlist extends AbsIntegerEntity {
 
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlaylistAudiobooks> audiobooks;
+
 }

@@ -33,4 +33,5 @@ public class Review extends AbsIntegerEntity {
     @Max(5)
     @Column(nullable = false, columnDefinition = "SMALLINT")
     private Integer rating;
+
 }

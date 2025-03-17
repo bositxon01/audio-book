@@ -23,4 +23,5 @@ public class AudioFile extends AbsIntegerEntity {
 
     @Column(nullable = false)
     private Integer durationSeconds; // Qismning davomiyligi (sekundlarda)
+
 }

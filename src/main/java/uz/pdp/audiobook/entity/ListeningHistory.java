@@ -35,4 +35,5 @@ public class ListeningHistory extends AbsIntegerEntity {
 
     @Column(nullable = false)
     private boolean completed;
+
 }

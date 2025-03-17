@@ -9,6 +9,7 @@ import uz.pdp.audiobook.payload.AuthorDTO;
 @Mapper(componentModel = "spring")
 public interface AuthorMapper {
     Author toEntity(AuthorDTO dto);
+
     AuthorDTO toDto(Author author);
 
     @Mapping(target = "id", ignore = true) // ID o'zgarmasligi uchun
