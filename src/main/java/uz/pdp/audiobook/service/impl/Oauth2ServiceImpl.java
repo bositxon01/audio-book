@@ -30,4 +30,5 @@ public class Oauth2ServiceImpl implements Oauth2Service {
 
         return ApiResult.success(jwtToken);
     }
+
 }

@@ -6,6 +6,7 @@ import uz.pdp.audiobook.payload.GenreDTO;
 import java.util.List;
 
 public interface GenreService {
+
     ApiResult<GenreDTO> createGenre(GenreDTO genreDTO);
 
     ApiResult<GenreDTO> getGenre(Integer id);
@@ -15,4 +16,5 @@ public interface GenreService {
     ApiResult<GenreDTO> updateGenre(Integer id, GenreDTO genreDTO);
 
     ApiResult<Object> deleteGenre(Integer id);
+
 }
