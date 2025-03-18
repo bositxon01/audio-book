@@ -8,19 +8,20 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
-import java.sql.Timestamp;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"user", "audiobook"})
+@ToString(callSuper = true, exclude = {"user", "audiobook", "audioFile"})
 @Entity
-@Table(name = "listening_history")
+@Table(name = "user_progress",
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"user_id", "audiobook_id"}
+        ))
 
 @SQLRestriction(value = "deleted = false")
-@SQLDelete(sql = "UPDATE listening_history SET deleted = true WHERE id = ?")
-public class ListeningHistory extends AbsIntegerEntity {
+@SQLDelete(sql = "UPDATE user_progress SET deleted = true WHERE id = ?")
+public class UserProgress extends AbsIntegerEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -30,13 +31,19 @@ public class ListeningHistory extends AbsIntegerEntity {
     @JoinColumn(name = "audiobook_id", nullable = false)
     private Audiobook audiobook;
 
-    @Column(nullable = false, updatable = false)
-    private Timestamp lastListeningTime;
+    @ManyToOne
+    private AudioFile audioFile;
 
     @Min(0)
     @Max(100)
     @Column(nullable = false)
     private Integer progressPercentage;
+
+    @Min(0)
+    private Integer lastAudioFilePosition; // Position in seconds where the user stopped
+
+    @Min(1)
+    private Integer lastPage;  // The last page the user viewed
 
     @Column(nullable = false)
     private boolean completed;
