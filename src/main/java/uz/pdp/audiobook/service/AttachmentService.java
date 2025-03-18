@@ -6,10 +6,16 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.AttachmentDTO;
 
+import java.util.List;
+
 public interface AttachmentService {
+
     ApiResult<AttachmentDTO> upload(MultipartFile file);
 
-    ApiResult<AttachmentDTO> getAttachment(Integer id);
+    ApiResult<AttachmentDTO> getAttachmentById(Integer id);
+
+    ApiResult<List<AttachmentDTO>> getAllAttachments();
 
     ResponseEntity<Resource> download(Integer id);
+
 }

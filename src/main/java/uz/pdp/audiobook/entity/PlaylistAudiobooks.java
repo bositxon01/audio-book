@@ -2,6 +2,8 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
@@ -12,6 +14,9 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @Entity
 @Table(name = "playlist_audiobooks",
         uniqueConstraints = @UniqueConstraint(columnNames = {"playlist_id", "audiobook_id"}))
+
+@SQLRestriction(value = "deleted = false")
+@SQLDelete(sql = "UPDATE playlist_audiobooks SET deleted = true WHERE id = ?")
 public class PlaylistAudiobooks extends AbsIntegerEntity {
 
     @ManyToOne

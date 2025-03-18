@@ -6,6 +6,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
@@ -15,6 +17,9 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @ToString
 @Entity
 @Builder
+
+@SQLRestriction(value = "deleted = false")
+@SQLDelete(sql = "UPDATE attachment SET deleted = true WHERE id = ?")
 public class Attachment extends AbsIntegerEntity {
 
     @NotBlank(message = "Filename cannot be blank")
@@ -36,7 +41,7 @@ public class Attachment extends AbsIntegerEntity {
     @Min(1)
     private Long size;
 
-    @OneToOne(mappedBy = "attachment")
+    @OneToOne(mappedBy = "bookAttachment")
     private Audiobook audiobook;
 
 }

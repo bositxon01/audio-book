@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 import java.sql.Timestamp;
@@ -15,6 +17,9 @@ import java.sql.Timestamp;
 @ToString(callSuper = true, exclude = {"user", "audiobook"})
 @Entity
 @Table(name = "listening_history")
+
+@SQLRestriction(value = "deleted = false")
+@SQLDelete(sql = "UPDATE listening_history SET deleted = true WHERE id = ?")
 public class ListeningHistory extends AbsIntegerEntity {
 
     @ManyToOne

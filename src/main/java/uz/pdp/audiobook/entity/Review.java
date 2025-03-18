@@ -1,11 +1,16 @@
 package uz.pdp.audiobook.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 @AllArgsConstructor
@@ -14,6 +19,9 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @Setter
 @ToString(callSuper = true, exclude = {"user", "audiobook"})
 @Entity
+
+@SQLRestriction(value = "deleted = false")
+@SQLDelete(sql = "UPDATE review SET deleted = true WHERE id = ?")
 public class Review extends AbsIntegerEntity {
 
     @ManyToOne

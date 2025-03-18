@@ -1,16 +1,16 @@
 package uz.pdp.audiobook.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import uz.pdp.audiobook.entity.Author;
 import uz.pdp.audiobook.payload.AuthorDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AuthorMapper {
+
     Author toEntity(AuthorDTO dto);
 
-    AuthorDTO toDto(Author author);
+    AuthorDTO toDTO(Author author);
 
     @Mapping(target = "id", ignore = true) // ID o'zgarmasligi uchun
     void updateAuthorFromDto(AuthorDTO dto, @MappingTarget Author author);

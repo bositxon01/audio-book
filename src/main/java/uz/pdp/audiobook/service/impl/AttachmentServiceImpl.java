@@ -19,11 +19,14 @@ import uz.pdp.audiobook.repository.AttachmentRepository;
 import uz.pdp.audiobook.service.AttachmentService;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -39,12 +42,29 @@ public class AttachmentServiceImpl implements AttachmentService {
     private static final long MAX_FILE_SIZE = 100L * 1024 * 1024;
 
     @Override
+    public ApiResult<AttachmentDTO> getAttachmentById(Integer id) {
+        return attachmentRepository.findByIdAndDeletedFalse(id)
+                .map(attachmentMapper::toDTO)
+                .map(ApiResult::success)
+                .orElse(ApiResult.error("Attachment not found with id: " + id));
+    }
+
+    @Override
+    public ApiResult<List<AttachmentDTO>> getAllAttachments() {
+        List<AttachmentDTO> attachmentDTOS = attachmentRepository.findByDeletedFalse()
+                .stream()
+                .map(attachmentMapper::toDTO)
+                .toList();
+
+        return ApiResult.success(attachmentDTOS);
+    }
+
+    @Override
     public ApiResult<AttachmentDTO> upload(MultipartFile multipartFile) {
         try {
             if (multipartFile.isEmpty())
                 return ApiResult.error("File is empty");
 
-            String contentType = multipartFile.getContentType();
             long fileSize = multipartFile.getSize();
 
             if (fileSize > MAX_FILE_SIZE)
@@ -58,7 +78,8 @@ public class AttachmentServiceImpl implements AttachmentService {
 
             String originalFilename = multipartFile.getOriginalFilename();
 
-            String filename = UUID.randomUUID() + "." + StringUtils.getFilenameExtension(originalFilename);
+            String filename = Objects.requireNonNull(originalFilename).substring(0, originalFilename.lastIndexOf("."));
+            String filenameWithExtension = filename + "&&" + UUID.randomUUID() + "." + StringUtils.getFilenameExtension(originalFilename);
 
             Path path = Paths.get(baseFolder)
                     .resolve(String.valueOf(year))
@@ -67,12 +88,14 @@ public class AttachmentServiceImpl implements AttachmentService {
 
             Files.createDirectories(path);
 
-            path = path.resolve(filename);
+            path = path.resolve(filenameWithExtension);
 
             Files.copy(multipartFile.getInputStream(), path);
 
+            String contentType = multipartFile.getContentType();
+
             Attachment attachment = Attachment.builder()
-                    .filename(filename)
+                    .filename(filenameWithExtension)
                     .contentType(contentType)
                     .originalFilename(originalFilename)
                     .size(fileSize)
@@ -88,28 +111,26 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public ApiResult<AttachmentDTO> getAttachment(Integer id) {
-        return attachmentRepository.findByIdAndDeletedFalse(id)
-                .map(attachmentMapper::toDTO)
-                .map(ApiResult::success)
-                .orElse(ApiResult.error("Attachment not found with id: " + id));
-    }
-
-    @Override
     public ResponseEntity<Resource> download(Integer id) {
         try {
             Attachment attachment = attachmentRepository.findByIdAndDeletedFalse(id)
                     .orElseThrow(() -> new RuntimeException("Attachment not found with id: " + id));
 
-            Path filePath = Paths.get(attachment.getPath()).toAbsolutePath().normalize();
+            Path filePath = Paths.get(attachment.getPath())
+                    .toAbsolutePath().normalize();
+
             Resource resource = new UrlResource(filePath.toUri());
 
             if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
                         .body(null);
             }
 
-            String encodedFilename = java.net.URLEncoder.encode(attachment.getOriginalFilename(), StandardCharsets.UTF_8).replace("+", "%20");
+            String encodedFilename = URLEncoder.encode(
+                            attachment.getOriginalFilename(),
+                            StandardCharsets.UTF_8)
+                    .replace("+", "%20");
 
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(attachment.getContentType()))
@@ -117,8 +138,10 @@ public class AttachmentServiceImpl implements AttachmentService {
                     .body(resource);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
         }
     }
+
 }

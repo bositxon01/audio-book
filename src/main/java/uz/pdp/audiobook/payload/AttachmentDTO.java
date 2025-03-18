@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AttachmentDTO implements Serializable {
+
     private Integer id;
 
     @NotBlank(message = "Filename cannot be blank")

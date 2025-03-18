@@ -21,14 +21,13 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "password") // Parolni chiqarib yuborish
+@ToString(exclude = "password")
 @Entity(name = "users")
+@Table(name = "users",
+        uniqueConstraints = @UniqueConstraint(name = "unique_active_users_usernames", columnNames = {"username", "deleted"}))
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
-
-@Table(name = "users",
-        uniqueConstraints = @UniqueConstraint(name = "unique_active_users_usernames", columnNames = {"username", "deleted"}))
 public class User extends Person implements UserDetails {
 
     @NotBlank

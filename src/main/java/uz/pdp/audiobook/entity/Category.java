@@ -2,6 +2,8 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
 import java.util.List;
@@ -15,8 +17,10 @@ import java.util.List;
 @Table(name = "category",
         uniqueConstraints = @UniqueConstraint(
                 name = "unique_active_categories_name", columnNames = {"name", "deleted"}
-        )
-)
+        ))
+
+@SQLRestriction(value = "deleted = false")
+@SQLDelete(sql = "UPDATE category SET deleted = true WHERE id = ?")
 public class Category extends AbsIntegerEntity {
 
     @Column(nullable = false)

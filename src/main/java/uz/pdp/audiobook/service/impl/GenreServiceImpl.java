@@ -24,21 +24,22 @@ public class GenreServiceImpl implements GenreService {
     public ApiResult<GenreDTO> createGenre(GenreDTO genreDTO) {
         Genre genre = genreMapper.toEntity(genreDTO);
         genreRepository.save(genre);
-        return ApiResult.success(genreMapper.toDto(genre));
+        return ApiResult.success(genreMapper.toDTO(genre));
     }
 
     @Override
     public ApiResult<GenreDTO> getGenre(Integer id) {
         return genreRepository.findByIdAndDeletedFalse(id)
-                .map(genreMapper::toDto)
+                .map(genreMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Genre not found with id " + id));
     }
 
     @Override
     public ApiResult<List<GenreDTO>> getAllGenre() {
-        List<GenreDTO> genres = genreRepository.findByDeletedFalse().stream()
-                .map(genreMapper::toDto)
+        List<GenreDTO> genres = genreRepository.findByDeletedFalse()
+                .stream()
+                .map(genreMapper::toDTO)
                 .collect(Collectors.toList());
         return ApiResult.success(genres);
     }
@@ -49,8 +50,9 @@ public class GenreServiceImpl implements GenreService {
                 .map(existingGenre -> {
                     genreMapper.updateGenreFromDto(genreDTO, existingGenre);
                     genreRepository.save(existingGenre);
-                    return ApiResult.success(genreMapper.toDto(existingGenre));
-                }).orElse(ApiResult.error("Genre not found with id: " + id));
+                    return ApiResult.success(genreMapper.toDTO(existingGenre));
+                })
+                .orElse(ApiResult.error("Genre not found with id: " + id));
     }
 
     @Override
@@ -67,4 +69,5 @@ public class GenreServiceImpl implements GenreService {
 
         return ApiResult.success("Genre deleted successfully.");
     }
+
 }
