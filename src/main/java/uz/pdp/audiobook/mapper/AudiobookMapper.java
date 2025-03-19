@@ -2,7 +2,7 @@ package uz.pdp.audiobook.mapper;
 
 import org.mapstruct.*;
 import uz.pdp.audiobook.entity.Audiobook;
-import uz.pdp.audiobook.entity.AudiobookDTO;
+import uz.pdp.audiobook.payload.AudiobookDTO;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING, uses = {AttachmentMapper.class, AttachmentMapper.class})

@@ -2,7 +2,7 @@ package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.pdp.audiobook.entity.AudiobookDTO;
+import uz.pdp.audiobook.payload.AudiobookDTO;
 import uz.pdp.audiobook.mapper.AudiobookMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.repository.AudiobookRepository;

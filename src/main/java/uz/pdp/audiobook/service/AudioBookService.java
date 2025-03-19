@@ -1,6 +1,6 @@
 package uz.pdp.audiobook.service;
 
-import uz.pdp.audiobook.entity.AudiobookDTO;
+import uz.pdp.audiobook.payload.AudiobookDTO;
 import uz.pdp.audiobook.payload.ApiResult;
 
 import java.util.List;

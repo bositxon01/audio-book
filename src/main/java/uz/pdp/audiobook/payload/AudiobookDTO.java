@@ -1,8 +1,7 @@
-package uz.pdp.audiobook.entity;
+package uz.pdp.audiobook.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import uz.pdp.audiobook.payload.AttachmentDTO;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +23,5 @@ public class AudiobookDTO {
 
     private AttachmentDTO bookAttachment;
 
+    private CategoryDTO category;
 }

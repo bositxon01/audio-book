@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public ApiResult<AuthorDTO> getAuthor(Integer id) {
-        return authorRepository.findByIdAndDeletedFalse(id)
+        return authorRepository.findById(id)
                 .map(authorMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Author not found with id " + id));
@@ -37,7 +37,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     //  @PreAuthorize("hasRole(T(uz.pdp.audiobook.enums.Role).SUPER_ADMIN)")
     public ApiResult<List<AuthorDTO>> getAllAuthors() {
-        List<AuthorDTO> authors = authorRepository.findByDeletedFalse()
+        List<AuthorDTO> authors = authorRepository.findAll()
                 .stream()
                 .map(authorMapper::toDTO)
                 .toList();
@@ -47,7 +47,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDTO authorDTO) {
-        return authorRepository.findByIdAndDeletedFalse(id)
+        return authorRepository.findById(id)
                 .map(existingAuthor -> {
                     authorMapper.updateAuthorFromDto(authorDTO, existingAuthor);
                     authorRepository.save(existingAuthor);
@@ -58,7 +58,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public ApiResult<Object> deleteAuthor(Integer id) {
-        Optional<Author> optionalAuthor = authorRepository.findByIdAndDeletedFalse(id);
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
 
         if (optionalAuthor.isEmpty()) {
             return ApiResult.error("Author not found with id: " + id);
