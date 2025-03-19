@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ApiResult<CategoryDTO> getCategory(Integer id) {
-        return categoryRepository.findByIdAndDeletedFalse(id)
+        return categoryRepository.findById(id)
                 .map(categoryMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Category not found with id " + id));
@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ApiResult<List<CategoryDTO>> getAllCategories() {
-        List<CategoryDTO> categories = categoryRepository.findByDeletedFalse()
+        List<CategoryDTO> categories = categoryRepository.findAll()
                 .stream()
                 .map(categoryMapper::toDTO)
                 .toList();
@@ -46,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO) {
-        return categoryRepository.findByIdAndDeletedFalse(id)
+        return categoryRepository.findById(id)
                 .map(existingCategory -> {
                     categoryMapper.partialUpdate(categoryDTO, existingCategory);
                     categoryRepository.save(existingCategory);
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public ApiResult<Object> deleteCategory(Integer id) {
-        Optional<Category> optionalCategory = categoryRepository.findByIdAndDeletedFalse(id);
+        Optional<Category> optionalCategory = categoryRepository.findById(id);
 
         if (optionalCategory.isEmpty()) {
             return ApiResult.error("Category not found with id: " + id);

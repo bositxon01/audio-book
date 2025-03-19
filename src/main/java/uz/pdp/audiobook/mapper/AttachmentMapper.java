@@ -12,9 +12,11 @@ public interface AttachmentMapper {
 
     Attachment toEntity(AttachmentDTO attachmentDTO);
 
-    @Mapping(target = "filename", ignore = true )
+    @Mapping(target = "filename", ignore = true)
     AttachmentDTO toDTO(Attachment attachment);
 
     List<AttachmentDTO> toDTO(List<Attachment> attachments);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Attachment partialUpdate(AttachmentDTO attachmentDTO, @MappingTarget Attachment attachment);
 }

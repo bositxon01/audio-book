@@ -35,11 +35,10 @@ public class Audiobook extends AbsIntegerEntity {
     private Category category;
 
     @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Attachment bookAttachment;
 
-    @OneToMany(mappedBy = "audiobook", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<AudioFile> audioFiles;
-
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private AudioFile audioFile;
 }

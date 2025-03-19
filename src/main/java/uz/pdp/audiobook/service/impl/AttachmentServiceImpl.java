@@ -43,7 +43,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public ApiResult<AttachmentDTO> getAttachmentById(Integer id) {
-        return attachmentRepository.findByIdAndDeletedFalse(id)
+        return attachmentRepository.findById(id)
                 .map(attachmentMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Attachment not found with id: " + id));
@@ -51,7 +51,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     @Override
     public ApiResult<List<AttachmentDTO>> getAllAttachments() {
-        List<AttachmentDTO> attachmentDTOS = attachmentRepository.findByDeletedFalse()
+        List<AttachmentDTO> attachmentDTOS = attachmentRepository.findAll()
                 .stream()
                 .map(attachmentMapper::toDTO)
                 .toList();
@@ -113,7 +113,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     @Override
     public ResponseEntity<Resource> download(Integer id) {
         try {
-            Attachment attachment = attachmentRepository.findByIdAndDeletedFalse(id)
+            Attachment attachment = attachmentRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Attachment not found with id: " + id));
 
             Path filePath = Paths.get(attachment.getPath())
