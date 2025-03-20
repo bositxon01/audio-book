@@ -137,10 +137,8 @@ public class AttachmentServiceImpl implements AttachmentService {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFilename + "\"")
                     .body(resource);
 
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null);
+        } catch (IOException e) {
+            throw new RuntimeException("Error occurred while downloading file: " + e.getMessage(), e);
         }
     }
 

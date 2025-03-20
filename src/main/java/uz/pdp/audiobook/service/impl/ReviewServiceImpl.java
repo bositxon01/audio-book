@@ -2,6 +2,7 @@ package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Review;
 import uz.pdp.audiobook.mapper.ReviewMapper;
 import uz.pdp.audiobook.payload.ApiResult;
@@ -21,39 +22,44 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewMapper reviewMapper;
 
     @Override
+    @Transactional
     public ApiResult<ReviewDTO> createReview(ReviewDTO reviewDTO) {
         Review review = reviewMapper.toEntity(reviewDTO);
         reviewRepository.save(review);
-        return ApiResult.success(reviewMapper.toDto(review));
+        return ApiResult.success(reviewMapper.toDTO(review));
     }
 
     @Override
     public ApiResult<ReviewDTO> getReview(Integer id) {
         return reviewRepository.findByIdAndDeletedFalse(id)
-                .map(reviewMapper::toDto)
+                .map(reviewMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Review not found with id " + id));
     }
 
     @Override
     public ApiResult<List<ReviewDTO>> getAllReviews() {
-        List<ReviewDTO> reviews = reviewRepository.findByDeletedFalse().stream()
-                .map(reviewMapper::toDto)
+        List<ReviewDTO> reviews = reviewRepository.findByDeletedFalse()
+                .stream()
+                .map(reviewMapper::toDTO)
                 .collect(Collectors.toList());
         return ApiResult.success(reviews);
     }
 
     @Override
+    @Transactional
     public ApiResult<ReviewDTO> updateReview(Integer id, ReviewDTO reviewDTO) {
         return reviewRepository.findByIdAndDeletedFalse(id)
                 .map(existingReview -> {
                     reviewMapper.updateReview(reviewDTO, existingReview);
                     reviewRepository.save(existingReview);
-                    return ApiResult.success(reviewMapper.toDto(existingReview));
-                }).orElse(ApiResult.error("Review not found with id: " + id));
+                    return ApiResult.success(reviewMapper.toDTO(existingReview));
+                })
+                .orElse(ApiResult.error("Review not found with id: " + id));
     }
 
     @Override
+    @Transactional
     public ApiResult<Object> deleteReview(Integer id) {
         Optional<Review> optionalReview = reviewRepository.findByIdAndDeletedFalse(id);
 

@@ -1,21 +1,20 @@
 package uz.pdp.audiobook.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import uz.pdp.audiobook.entity.Review;
 import uz.pdp.audiobook.payload.ReviewDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ReviewMapper {
-
 
     Review toEntity(ReviewDTO reviewDTO);
 
-    ReviewDTO toDto(Review review);
+    ReviewDTO toDTO(Review review);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "audiobook", ignore = true)
     void updateReview(ReviewDTO reviewDTO, @MappingTarget Review review);
+
 }

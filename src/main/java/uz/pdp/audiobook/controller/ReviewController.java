@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,38 +16,38 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Review API", description = "Review CRUD API")
 public class ReviewController {
+
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<ReviewDTO>> addReview(@RequestBody ReviewDTO reviewDTO) {
-        ApiResult<ReviewDTO> result = reviewService.createReview(reviewDTO);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<ApiResult<ReviewDTO>> createReview(@Valid @RequestBody ReviewDTO reviewDTO) {
+        ApiResult<ReviewDTO> apiResult = reviewService.createReview(reviewDTO);
+        return ResponseEntity.ok(apiResult);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResult<ReviewDTO>> getReview(@PathVariable Integer id) {
-        ApiResult<ReviewDTO> result = reviewService.getReview(id);
-        return ResponseEntity.ok(result);
+        ApiResult<ReviewDTO> apiResult = reviewService.getReview(id);
+        return ResponseEntity.ok(apiResult);
     }
 
     @GetMapping
     public ResponseEntity<ApiResult<List<ReviewDTO>>> getAllReviews() {
-        ApiResult<List<ReviewDTO>> result = reviewService.getAllReviews();
-        return ResponseEntity.ok(result);
+        ApiResult<List<ReviewDTO>> apiResult = reviewService.getAllReviews();
+        return ResponseEntity.ok(apiResult);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<ReviewDTO>> updateReview(@PathVariable Integer id,
-                                                             @RequestBody ReviewDTO reviewDTO) {
-        ApiResult<ReviewDTO> result = reviewService.updateReview(id, reviewDTO);
-        return ResponseEntity.ok(result);
+                                                             @Valid @RequestBody ReviewDTO reviewDTO) {
+        ApiResult<ReviewDTO> apiResult = reviewService.updateReview(id, reviewDTO);
+        return ResponseEntity.ok(apiResult);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResult<Object>> deleteReview(@PathVariable Integer id) {
-        ApiResult<Object> result = reviewService.deleteReview(id);
-        return ResponseEntity.ok(result);
+        ApiResult<Object> apiResult = reviewService.deleteReview(id);
+        return ResponseEntity.ok(apiResult);
     }
-
 
 }

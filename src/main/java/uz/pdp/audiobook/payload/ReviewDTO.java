@@ -26,5 +26,4 @@ public class ReviewDTO {
     @Max(5)
     private Integer rating;
 
-
 }

@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface ReviewService {
 
-
     ApiResult<ReviewDTO> createReview(ReviewDTO reviewDTO);
 
     ApiResult<ReviewDTO> getReview(Integer id);
@@ -17,4 +16,5 @@ public interface ReviewService {
     ApiResult<ReviewDTO> updateReview(Integer id, ReviewDTO reviewDTO);
 
     ApiResult<Object> deleteReview(Integer id);
+
 }
