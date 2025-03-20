@@ -41,10 +41,6 @@ public class JWTProvider {
                 .getBody();
     }
 
-    public String extractUsername(String token) {
-        return extractClaims(token).getSubject();
-    }
-
     public String validateToken(String token) {
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
 

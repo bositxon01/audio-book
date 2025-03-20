@@ -16,4 +16,5 @@ public interface AuthService extends UserDetailsService {
     ApiResult<String> forgetPassword(String email);
 
     ApiResult<String> resetPassword(String email, String token, String newPassword);
+
 }

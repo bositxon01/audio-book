@@ -6,13 +6,14 @@ import org.springframework.stereotype.Component;
 import uz.pdp.audiobook.utils.VerificationInfo;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
 public class VerificationCleanupScheduler {
     private final Map<String, VerificationInfo> verificationData;
 
-    @Scheduled(fixedRate = 60_000)
+    @Scheduled(fixedRate = 2, timeUnit = TimeUnit.MINUTES)
     public void cleanUpExpiredVerifications() {
         long now = System.currentTimeMillis();
 

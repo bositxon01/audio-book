@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class GenreController {
     private final GenreService genreService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<GenreDTO>> createGenre(@RequestBody GenreDTO genreDTO) {
+    public ResponseEntity<ApiResult<GenreDTO>> createGenre(@Valid @RequestBody GenreDTO genreDTO) {
         ApiResult<GenreDTO> result = genreService.createGenre(genreDTO);
         return ResponseEntity.ok(result);
     }
@@ -38,7 +39,7 @@ public class GenreController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<GenreDTO>> updateGenre(@PathVariable Integer id,
-                                                           @RequestBody GenreDTO genreDTO) {
+                                                           @Valid @RequestBody GenreDTO genreDTO) {
         ApiResult<GenreDTO> result = genreService.updateGenre(id, genreDTO);
         return ResponseEntity.ok(result);
     }
