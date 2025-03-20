@@ -23,7 +23,11 @@ import java.util.Collection;
 @ToString(exclude = "password")
 @Entity(name = "users")
 @Table(name = "users",
-        uniqueConstraints = @UniqueConstraint(name = "unique_active_users_usernames", columnNames = {"username", "deleted"}))
+        uniqueConstraints = @UniqueConstraint(
+                name = "unique_active_user_username",
+                columnNames = {"username", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")

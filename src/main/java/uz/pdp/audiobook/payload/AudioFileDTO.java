@@ -1,6 +1,5 @@
 package uz.pdp.audiobook.payload;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,11 +7,12 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class GenreDTO {
+public class AudioFileDTO {
 
     private Integer id;
 
-    @Column(unique = true, nullable = false, length = 50)
-    private String name;
+    private String fileUrl;
+
+    private Integer durationSeconds;
 
 }

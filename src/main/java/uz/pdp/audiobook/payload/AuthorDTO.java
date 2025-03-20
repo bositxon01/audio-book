@@ -2,15 +2,15 @@ package uz.pdp.audiobook.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 public class AuthorDTO {
 
     private Integer id;
@@ -25,4 +25,5 @@ public class AuthorDTO {
 
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
+
 }

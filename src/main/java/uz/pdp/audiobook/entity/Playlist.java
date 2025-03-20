@@ -14,19 +14,25 @@ import java.util.List;
 @Setter
 @ToString(callSuper = true, exclude = {"user", "audiobooks"})
 @Entity
+@Table(name = "playlist",
+        uniqueConstraints = @UniqueConstraint(
+                name = "unique_active_playlist",
+                columnNames = {"user_id", "playlist_name", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE playlist SET deleted = true WHERE id = ?")
 public class Playlist extends AbsIntegerEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String playlistName;
 
-    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<PlaylistAudiobooks> audiobooks;
 
 }

@@ -13,17 +13,21 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @ToString(exclude = {"playlist", "audiobook"})
 @Entity
 @Table(name = "playlist_audiobooks",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"playlist_id", "audiobook_id"}))
+        uniqueConstraints = @UniqueConstraint(
+                name = "unique_active_playlist_audiobook",
+                columnNames = {"playlist_id", "audiobook_id", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE playlist_audiobooks SET deleted = true WHERE id = ?")
 public class PlaylistAudiobooks extends AbsIntegerEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_id", nullable = false)
     private Playlist playlist; // Playlist bilan bog‘lash
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "audiobook_id", nullable = false)
     private Audiobook audiobook; // Audiobook bilan bog‘lash
 
