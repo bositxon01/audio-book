@@ -6,20 +6,24 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @Entity
+@Table(name = "audiobook",
+        uniqueConstraints = @UniqueConstraint(
+                name = "unique_active_audiobook_title",
+                columnNames = {"title", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE audiobook SET deleted = true WHERE id = ?")
 public class Audiobook extends AbsIntegerEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT")

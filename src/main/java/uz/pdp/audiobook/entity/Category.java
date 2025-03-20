@@ -16,8 +16,10 @@ import java.util.List;
 @Entity
 @Table(name = "category",
         uniqueConstraints = @UniqueConstraint(
-                name = "unique_active_categories_name", columnNames = {"name", "deleted"}
-        ))
+                name = "unique_active_category",
+                columnNames = {"name", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE category SET deleted = true WHERE id = ?")

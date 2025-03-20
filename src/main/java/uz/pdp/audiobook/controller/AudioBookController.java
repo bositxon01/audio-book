@@ -5,8 +5,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.audiobook.payload.AudiobookDTO;
+import uz.pdp.audiobook.mapper.AudioFileMapper;
 import uz.pdp.audiobook.payload.ApiResult;
+import uz.pdp.audiobook.payload.AudioFileDTO;
+import uz.pdp.audiobook.payload.AudiobookDTO;
+import uz.pdp.audiobook.payload.AuthorDTO;
+import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.service.AudioBookService;
 
 import java.util.List;
@@ -18,6 +22,8 @@ import java.util.List;
 public class AudioBookController {
 
     private final AudioBookService audioBookService;
+    private final AudiobookRepository audiobookRepository;
+    private final AudioFileMapper audioFileMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResult<AudiobookDTO>> getAudioBookById(@PathVariable("id") Integer id) {
@@ -30,6 +36,20 @@ public class AudioBookController {
         ApiResult<List<AudiobookDTO>> apiResult = audioBookService.getAudioBooks();
         return ResponseEntity.ok(apiResult);
     }
+
+    @GetMapping("/{id}/authors")
+    public ResponseEntity<ApiResult<List<AuthorDTO>>> getAuthorsByAudiobookId(@PathVariable("id") Integer id) {
+        ApiResult<List<AuthorDTO>> apiResult = audioBookService.getAuthorsByAudiobookId(id);
+        return ResponseEntity.ok(apiResult);
+    }
+
+    @GetMapping("/{id}/audio-file")
+    //todo AudioFileDTO creating and writing this url
+    public ResponseEntity<ApiResult<AudioFileDTO>> getAudioFileById(@PathVariable("id") Integer id) {
+        ApiResult<AudioFileDTO> apiResult = audioBookService.getAudioFileByAudioBookId(id);
+        return ResponseEntity.ok(apiResult);
+    }
+
 
     @PostMapping
     public ResponseEntity<ApiResult<AudiobookDTO>> createAudioBook(@Valid @RequestBody AudiobookDTO audiobookDTO) {

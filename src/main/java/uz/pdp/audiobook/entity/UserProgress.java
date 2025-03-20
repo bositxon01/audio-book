@@ -16,8 +16,10 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @Entity
 @Table(name = "user_progress",
         uniqueConstraints = @UniqueConstraint(
-                columnNames = {"user_id", "audiobook_id"}
-        ))
+                name = "unique_active_user_progress",
+                columnNames = {"user_id", "audiobook_id", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE user_progress SET deleted = true WHERE id = ?")

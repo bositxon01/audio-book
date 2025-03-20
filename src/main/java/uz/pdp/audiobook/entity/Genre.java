@@ -17,15 +17,17 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @Entity
 @Table(name = "genre",
         uniqueConstraints = @UniqueConstraint(
-                name = "unique_active_genre_name", columnNames = {"name", "deleted"}
-        ))
+                name = "unique_active_genre",
+                columnNames = {"name", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE genre SET deleted = true WHERE id = ?")
 public class Genre extends AbsIntegerEntity {
 
     @ToString.Include
-    @Column(unique = true, nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String name;
 
 }
