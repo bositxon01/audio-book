@@ -16,4 +16,5 @@ public interface AuthorService {
     ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDTO authorDTO);
 
     ApiResult<Object> deleteAuthor(Integer id);
+
 }

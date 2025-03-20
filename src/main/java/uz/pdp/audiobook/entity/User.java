@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -21,14 +20,17 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "password") // Parolni chiqarib yuborish
+@ToString(exclude = "password")
 @Entity(name = "users")
+@Table(name = "users",
+        uniqueConstraints = @UniqueConstraint(
+                name = "unique_active_user_username",
+                columnNames = {"username", "deleted"}
+        )
+)
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
-
-@Table(name = "users",
-        uniqueConstraints = @UniqueConstraint(name = "unique_active_users_usernames", columnNames = {"username", "deleted"}))
 public class User extends Person implements UserDetails {
 
     @NotBlank
@@ -39,15 +41,18 @@ public class User extends Person implements UserDetails {
     @JsonIgnore
     @NotBlank
     @Column(nullable = false)
-    @Pattern(
-            regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$",
-            message = "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character (@#$%^&+=!)"
-    )
     private String password;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // New flags for personalization:
+    @Column(nullable = false)
+    private Boolean preferencesConfigured = false;
+
+    @Column(nullable = false)
+    private Boolean preferencesSkipped = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

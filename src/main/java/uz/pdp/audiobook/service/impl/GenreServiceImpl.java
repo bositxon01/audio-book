@@ -24,38 +24,40 @@ public class GenreServiceImpl implements GenreService {
     public ApiResult<GenreDTO> createGenre(GenreDTO genreDTO) {
         Genre genre = genreMapper.toEntity(genreDTO);
         genreRepository.save(genre);
-        return ApiResult.success(genreMapper.toDto(genre));
+        return ApiResult.success(genreMapper.toDTO(genre));
     }
 
     @Override
     public ApiResult<GenreDTO> getGenre(Integer id) {
-        return genreRepository.findByIdAndDeletedFalse(id)
-                .map(genreMapper::toDto)
+        return genreRepository.findById(id)
+                .map(genreMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Genre not found with id " + id));
     }
 
     @Override
     public ApiResult<List<GenreDTO>> getAllGenre() {
-        List<GenreDTO> genres = genreRepository.findByDeletedFalse().stream()
-                .map(genreMapper::toDto)
+        List<GenreDTO> genres = genreRepository.findAll()
+                .stream()
+                .map(genreMapper::toDTO)
                 .collect(Collectors.toList());
         return ApiResult.success(genres);
     }
 
     @Override
     public ApiResult<GenreDTO> updateGenre(Integer id, GenreDTO genreDTO) {
-        return genreRepository.findByIdAndDeletedFalse(id)
+        return genreRepository.findById(id)
                 .map(existingGenre -> {
                     genreMapper.updateGenreFromDto(genreDTO, existingGenre);
                     genreRepository.save(existingGenre);
-                    return ApiResult.success(genreMapper.toDto(existingGenre));
-                }).orElse(ApiResult.error("Genre not found with id: " + id));
+                    return ApiResult.success(genreMapper.toDTO(existingGenre));
+                })
+                .orElse(ApiResult.error("Genre not found with id: " + id));
     }
 
     @Override
     public ApiResult<Object> deleteGenre(Integer id) {
-        Optional<Genre> optionalGenre = genreRepository.findByIdAndDeletedFalse(id);
+        Optional<Genre> optionalGenre = genreRepository.findById(id);
 
         if (optionalGenre.isEmpty()) {
             return ApiResult.error("Genre not found with id: " + id);
@@ -67,4 +69,5 @@ public class GenreServiceImpl implements GenreService {
 
         return ApiResult.success("Genre deleted successfully.");
     }
+
 }

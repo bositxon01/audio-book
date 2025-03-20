@@ -7,8 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.enums.Role;
@@ -25,7 +23,7 @@ import uz.pdp.audiobook.utils.VerificationInfo;
 import java.util.Map;
 import java.util.Objects;
 
-import static uz.pdp.audiobook.utils.VerificationCodeGenerator.*;
+import static uz.pdp.audiobook.utils.VerificationCodeGenerator.generateVerificationCode;
 
 @Service
 @RequiredArgsConstructor

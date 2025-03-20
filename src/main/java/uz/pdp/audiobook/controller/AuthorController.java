@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<AuthorDTO>> createAuthor(@RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<ApiResult<AuthorDTO>> createAuthor(@Valid @RequestBody AuthorDTO authorDTO) {
         ApiResult<AuthorDTO> result = authorService.createAuthor(authorDTO);
         return ResponseEntity.ok(result);
     }
@@ -37,7 +38,8 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResult<AuthorDTO>> updateAuthor(@PathVariable Integer id, @RequestBody AuthorDTO authorDTO) {
+    public ResponseEntity<ApiResult<AuthorDTO>> updateAuthor(@PathVariable Integer id,
+                                                             @Valid @RequestBody AuthorDTO authorDTO) {
         ApiResult<AuthorDTO> result = authorService.updateAuthor(id, authorDTO);
         return ResponseEntity.ok(result);
     }
