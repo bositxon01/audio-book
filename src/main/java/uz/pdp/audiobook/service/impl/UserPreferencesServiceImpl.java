@@ -2,6 +2,7 @@ package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Category;
 import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.entity.UserCategoryPreference;
@@ -42,6 +43,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
     }
 
     @Override
+    @Transactional
     public void updateUserPreferences(Integer userId, UserPreferencesDTO preferencesDTO) {
         // Validate that at least three categories are provided (the DTO validation ensures this).
         User user = userRepository.findById(userId)
