@@ -1,9 +1,6 @@
 package uz.pdp.audiobook.service;
 
-import uz.pdp.audiobook.payload.AudioFileDTO;
-import uz.pdp.audiobook.payload.AudiobookDTO;
-import uz.pdp.audiobook.payload.ApiResult;
-import uz.pdp.audiobook.payload.AuthorDTO;
+import uz.pdp.audiobook.payload.*;
 
 import java.util.List;
 
@@ -22,4 +19,6 @@ public interface AudioBookService {
     ApiResult<List<AuthorDTO>> getAuthorsByAudiobookId(Integer id);
 
     ApiResult<AudioFileDTO> getAudioFileByAudioBookId(Integer id);
+
+    ApiResult<List<GenreDTO>> getGenresByAudioBookId(Integer id);
 }

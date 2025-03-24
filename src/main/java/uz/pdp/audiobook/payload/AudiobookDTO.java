@@ -3,6 +3,8 @@ package uz.pdp.audiobook.payload;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -19,9 +21,14 @@ public class AudiobookDTO {
 
     private Integer duration;
 
-    private AttachmentDTO coverImage;
+    private Integer coverImageId;
 
-    private AttachmentDTO bookAttachment;
+    private Integer bookAttachmentId;
 
-    private CategoryDTO category;
+    private Integer categoryId;
+
+    private List<Integer> authorIds;
+
+    private List<Integer> genreIds;
+
 }
