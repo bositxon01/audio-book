@@ -73,4 +73,21 @@ public class ReviewServiceImpl implements ReviewService {
 
         return ApiResult.success("Review deleted successfully.");
     }
+
+    @Override
+    public ApiResult<Double> getAverageRating(Integer audioBookId) {
+        List<Review> reviews = reviewRepository.findAllByAudiobookIdAndDeletedFalse(audioBookId);
+
+        if (reviews.isEmpty()) {
+            return ApiResult.error("No reviews found for this audio book");
+        }
+
+        double averageRating = reviews.stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+
+        return ApiResult.success(averageRating);
+    }
+
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
+import uz.pdp.audiobook.payload.AudiobookDTO;
 import uz.pdp.audiobook.payload.ReviewDTO;
 import uz.pdp.audiobook.service.ReviewService;
 
@@ -49,5 +50,14 @@ public class ReviewController {
         ApiResult<Object> apiResult = reviewService.deleteReview(id);
         return ResponseEntity.ok(apiResult);
     }
+
+    @GetMapping("/average-rating/{audioBookId}")
+    public ResponseEntity<ApiResult<Double>> getAverageRating(@PathVariable Integer audioBookId) {
+        ApiResult<Double> apiResult = reviewService.getAverageRating(audioBookId);
+        return ResponseEntity.ok(apiResult);
+    }
+
+
+
 
 }
