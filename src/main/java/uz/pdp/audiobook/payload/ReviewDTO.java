@@ -15,6 +15,9 @@ public class ReviewDTO {
     @NotNull
     private Integer userId;
 
+    private Integer id;
+
+
     @NotNull
     private Integer audioBookId;
 
