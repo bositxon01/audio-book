@@ -13,12 +13,13 @@ import java.util.List;
 @Data
 public class PlaylistDTO {
 
-    @NotNull
+    @NotNull(message = "User ID cannot be null")
     private Integer userId;
 
-    @NotBlank
+    @NotBlank(message = "Playlist name cannot be blank")
     private String playlistName;
 
+    @NotNull(message = "Audiobooks list cannot be null")
     private List<Integer> audiobooksId;
 
 }
