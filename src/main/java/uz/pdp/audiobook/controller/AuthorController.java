@@ -12,7 +12,7 @@ import uz.pdp.audiobook.service.AuthorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/authors")
+@RequestMapping("/api/author")
 @RequiredArgsConstructor
 @Tag(name = "Author API", description = "Author CRUD API")
 public class AuthorController {
@@ -21,32 +21,32 @@ public class AuthorController {
 
     @PostMapping
     public ResponseEntity<ApiResult<AuthorDTO>> createAuthor(@Valid @RequestBody AuthorDTO authorDTO) {
-        ApiResult<AuthorDTO> result = authorService.createAuthor(authorDTO);
-        return ResponseEntity.ok(result);
+        ApiResult<AuthorDTO> apiResult = authorService.createAuthor(authorDTO);
+        return ResponseEntity.ok(apiResult);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResult<AuthorDTO>> getAuthor(@PathVariable Integer id) {
-        ApiResult<AuthorDTO> result = authorService.getAuthor(id);
-        return ResponseEntity.ok(result);
+        ApiResult<AuthorDTO> apiResult = authorService.getAuthor(id);
+        return ResponseEntity.ok(apiResult);
     }
 
     @GetMapping
     public ResponseEntity<ApiResult<List<AuthorDTO>>> getAllAuthors() {
-        ApiResult<List<AuthorDTO>> result = authorService.getAllAuthors();
-        return ResponseEntity.ok(result);
+        ApiResult<List<AuthorDTO>> apiResult = authorService.getAllAuthors();
+        return ResponseEntity.ok(apiResult);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<AuthorDTO>> updateAuthor(@PathVariable Integer id,
                                                              @Valid @RequestBody AuthorDTO authorDTO) {
-        ApiResult<AuthorDTO> result = authorService.updateAuthor(id, authorDTO);
-        return ResponseEntity.ok(result);
+        ApiResult<AuthorDTO> apiResult = authorService.updateAuthor(id, authorDTO);
+        return ResponseEntity.ok(apiResult);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResult<Object>> deleteAuthor(@PathVariable Integer id) {
-        ApiResult<Object> result = authorService.deleteAuthor(id);
-        return ResponseEntity.ok(result);
+        ApiResult<Object> apiResult = authorService.deleteAuthor(id);
+        return ResponseEntity.ok(apiResult);
     }
 }

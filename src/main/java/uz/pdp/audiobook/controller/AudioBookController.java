@@ -49,7 +49,6 @@ public class AudioBookController {
         return ResponseEntity.ok(apiResult);
     }
 
-
     @PostMapping
     public ResponseEntity<ApiResult<AudiobookDTO>> createAudioBook(@Valid @RequestBody AudiobookDTO audiobookDTO) {
         ApiResult<AudiobookDTO> apiResult = audioBookService.createAudioBook(audiobookDTO);

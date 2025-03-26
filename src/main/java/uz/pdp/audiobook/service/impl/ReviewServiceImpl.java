@@ -1,13 +1,18 @@
 package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.pdp.audiobook.entity.Audiobook;
 import uz.pdp.audiobook.entity.Review;
+import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.mapper.ReviewMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.ReviewDTO;
+import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.repository.ReviewRepository;
+import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.service.ReviewService;
 
 import java.util.List;
@@ -20,11 +25,28 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
+    private final UserRepository userRepository;
+    private final AudiobookRepository audiobookRepository;
 
     @Override
     @Transactional
     public ApiResult<ReviewDTO> createReview(ReviewDTO reviewDTO) {
         Review review = reviewMapper.toEntity(reviewDTO);
+
+        Integer userId = reviewDTO.getUserId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+
+        review.setUser(user);
+
+        Integer audioBookId = reviewDTO.getAudioBookId();
+
+        Audiobook audiobook = audiobookRepository.findById(audioBookId)
+                .orElseThrow(() -> new RuntimeException("AudioBook not found with id: " + audioBookId));
+
+        review.setAudiobook(audiobook);
+
         reviewRepository.save(review);
         return ApiResult.success(reviewMapper.toDTO(review));
     }
