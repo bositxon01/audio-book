@@ -8,9 +8,13 @@ import uz.pdp.audiobook.payload.ReviewDTO;
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ReviewMapper {
 
-    Review toEntity(ReviewDTO reviewDTO);
-
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "audioBookId", source = "audiobook.id")
     ReviewDTO toDTO(Review review);
+
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "audiobook", ignore = true)
+    Review toEntity(ReviewDTO reviewDTO);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)

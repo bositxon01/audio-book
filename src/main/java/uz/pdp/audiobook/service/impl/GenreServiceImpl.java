@@ -10,6 +10,7 @@ import uz.pdp.audiobook.payload.GenreDTO;
 import uz.pdp.audiobook.repository.GenreRepository;
 import uz.pdp.audiobook.service.GenreService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +28,19 @@ public class GenreServiceImpl implements GenreService {
         Genre genre = genreMapper.toEntity(genreDTO);
         genreRepository.save(genre);
         return ApiResult.success(genreMapper.toDTO(genre));
+    }
+
+    @Override
+    public ApiResult<List<GenreDTO>> createGenres(List<GenreDTO> genreDTOList) {
+        List<Genre> genres = new ArrayList<>();
+
+        for (GenreDTO genreDTO : genreDTOList) {
+            Genre genre = genreMapper.toEntity(genreDTO);
+            genreRepository.save(genre);
+            genres.add(genre);
+        }
+
+        return ApiResult.success(genreMapper.toDTO(genres));
     }
 
     @Override

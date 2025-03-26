@@ -10,6 +10,7 @@ import uz.pdp.audiobook.payload.CategoryDTO;
 import uz.pdp.audiobook.repository.CategoryRepository;
 import uz.pdp.audiobook.service.CategoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,19 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryMapper.toEntity(categoryDTO);
         categoryRepository.save(category);
         return ApiResult.success(categoryMapper.toDTO(category));
+    }
+
+    @Override
+    public ApiResult<List<CategoryDTO>> createCategories(List<CategoryDTO> categoryDTOList) {
+        List<Category> categories = new ArrayList<>();
+
+        for (CategoryDTO categoryDTO : categoryDTOList) {
+            Category category = categoryMapper.toEntity(categoryDTO);
+            categoryRepository.save(category);
+            categories.add(category);
+        }
+
+        return ApiResult.success(categoryMapper.toDTO(categories));
     }
 
     @Override

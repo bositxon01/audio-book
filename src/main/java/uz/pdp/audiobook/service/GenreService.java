@@ -9,6 +9,8 @@ public interface GenreService {
 
     ApiResult<GenreDTO> createGenre(GenreDTO genreDTO);
 
+    ApiResult<List<GenreDTO>> createGenres(List<GenreDTO> genreDTOList);
+
     ApiResult<GenreDTO> getGenre(Integer id);
 
     ApiResult<List<GenreDTO>> getAllGenre();
