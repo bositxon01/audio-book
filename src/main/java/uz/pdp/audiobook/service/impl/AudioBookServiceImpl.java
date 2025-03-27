@@ -3,6 +3,7 @@ package uz.pdp.audiobook.service.impl;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.*;
 import uz.pdp.audiobook.mapper.AudioFileMapper;
 import uz.pdp.audiobook.mapper.AudiobookMapper;
@@ -59,12 +60,12 @@ public class AudioBookServiceImpl implements AudioBookService {
     }
 
     @Override
+    @Transactional
     public ApiResult<AudiobookDTO> createAudioBook(AudiobookDTO audiobookDTO) {
-        // Convert DTO to entity and save the audiobook
+
         Audiobook audiobook = audiobookMapper.toEntity(audiobookDTO, entityManager);
         audiobookRepository.save(audiobook);
 
-        // Create associations for authors if provided
         if (audiobookDTO.getAuthorIds() != null) {
             for (Integer authorId : audiobookDTO.getAuthorIds()) {
                 Author author = entityManager.getReference(Author.class, authorId);
@@ -75,7 +76,6 @@ public class AudioBookServiceImpl implements AudioBookService {
             }
         }
 
-        // Create associations for genres if provided
         if (audiobookDTO.getGenreIds() != null) {
             for (Integer genreId : audiobookDTO.getGenreIds()) {
                 Genre genre = entityManager.getReference(Genre.class, genreId);
@@ -86,7 +86,6 @@ public class AudioBookServiceImpl implements AudioBookService {
             }
         }
 
-        // Convert the saved entity back to DTO
         AudiobookDTO savedDTO = audiobookMapper.toDTO(audiobook);
         populateAssociations(audiobook, savedDTO);
 
@@ -94,6 +93,7 @@ public class AudioBookServiceImpl implements AudioBookService {
     }
 
     @Override
+    @Transactional
     public ApiResult<AudiobookDTO> updateAudioBook(Integer id, AudiobookDTO audiobookDTO) {
         return audiobookRepository.findById(id)
                 .map(existingAudiobook -> {
@@ -107,6 +107,7 @@ public class AudioBookServiceImpl implements AudioBookService {
     }
 
     @Override
+    @Transactional
     public ApiResult<Object> deleteAudioBook(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
 
