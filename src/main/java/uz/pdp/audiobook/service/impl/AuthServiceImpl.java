@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.enums.Role;
 import uz.pdp.audiobook.mapper.UserMapper;
@@ -46,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ApiResult<String> register(RegisterDTO registerDTO) {
 
         String username = registerDTO.getUsername();
@@ -79,6 +81,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ApiResult<String> confirm(String email, String code) {
 
         VerificationInfo verificationInfo = verificationData.get(email);
@@ -123,6 +126,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ApiResult<String> forgetPassword(String username) {
 
         User user = userRepository.findByUsernameAndDeletedFalse(username)
@@ -152,6 +156,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ApiResult<String> resetPassword(String email, String token, String newPassword) {
 
         VerificationInfo verificationInfo = verificationData.get(email);

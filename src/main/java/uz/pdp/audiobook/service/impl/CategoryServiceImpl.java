@@ -2,6 +2,7 @@ package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Category;
 import uz.pdp.audiobook.mapper.CategoryMapper;
 import uz.pdp.audiobook.payload.ApiResult;
@@ -9,6 +10,7 @@ import uz.pdp.audiobook.payload.CategoryDTO;
 import uz.pdp.audiobook.repository.CategoryRepository;
 import uz.pdp.audiobook.service.CategoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +22,24 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
+    @Transactional
     public ApiResult<CategoryDTO> createCategory(CategoryDTO categoryDTO) {
         Category category = categoryMapper.toEntity(categoryDTO);
         categoryRepository.save(category);
         return ApiResult.success(categoryMapper.toDTO(category));
+    }
+
+    @Override
+    public ApiResult<List<CategoryDTO>> createCategories(List<CategoryDTO> categoryDTOList) {
+        List<Category> categories = new ArrayList<>();
+
+        for (CategoryDTO categoryDTO : categoryDTOList) {
+            Category category = categoryMapper.toEntity(categoryDTO);
+            categoryRepository.save(category);
+            categories.add(category);
+        }
+
+        return ApiResult.success(categoryMapper.toDTO(categories));
     }
 
     @Override
@@ -45,6 +61,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO) {
         return categoryRepository.findById(id)
                 .map(existingCategory -> {
@@ -56,6 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public ApiResult<Object> deleteCategory(Integer id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 

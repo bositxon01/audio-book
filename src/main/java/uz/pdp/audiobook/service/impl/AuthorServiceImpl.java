@@ -2,6 +2,7 @@ package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Author;
 import uz.pdp.audiobook.mapper.AuthorMapper;
 import uz.pdp.audiobook.payload.ApiResult;
@@ -20,6 +21,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorMapper authorMapper;
 
     @Override
+    @Transactional
     public ApiResult<AuthorDTO> createAuthor(AuthorDTO authorDTO) {
         Author author = authorMapper.toEntity(authorDTO);
         authorRepository.save(author);
@@ -46,6 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDTO authorDTO) {
         return authorRepository.findById(id)
                 .map(existingAuthor -> {
@@ -57,6 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    @Transactional
     public ApiResult<Object> deleteAuthor(Integer id) {
         Optional<Author> optionalAuthor = authorRepository.findById(id);
 

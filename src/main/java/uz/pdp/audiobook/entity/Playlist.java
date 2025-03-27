@@ -36,3 +36,4 @@ public class Playlist extends AbsIntegerEntity {
     private List<PlaylistAudiobooks> audiobooks;
 
 }
+

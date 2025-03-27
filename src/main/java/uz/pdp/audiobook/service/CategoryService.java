@@ -9,6 +9,8 @@ public interface CategoryService {
 
     ApiResult<CategoryDTO> createCategory(CategoryDTO categoryDTO);
 
+    ApiResult<List<CategoryDTO>> createCategories(List<CategoryDTO> categoryDTOList);
+
     ApiResult<CategoryDTO> getCategory(Integer id);
 
     ApiResult<List<CategoryDTO>> getAllCategories();
