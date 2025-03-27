@@ -13,6 +13,8 @@ import java.util.List;
 @Data
 public class PlaylistDTO {
 
+    private Integer id;
+
     @NotNull(message = "User ID cannot be null")
     private Integer userId;
 

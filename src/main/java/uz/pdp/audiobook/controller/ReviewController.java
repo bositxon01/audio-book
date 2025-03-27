@@ -51,13 +51,4 @@ public class ReviewController {
         return ResponseEntity.ok(apiResult);
     }
 
-    @GetMapping("/average-rating/{audioBookId}")
-    public ResponseEntity<ApiResult<Double>> getAverageRating(@PathVariable Integer audioBookId) {
-        ApiResult<Double> apiResult = reviewService.getAverageRating(audioBookId);
-        return ResponseEntity.ok(apiResult);
-    }
-
-
-
-
 }

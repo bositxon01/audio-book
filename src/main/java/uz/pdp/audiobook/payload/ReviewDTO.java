@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class ReviewDTO {
 
+    private Integer id;
+
     @NotNull
     private Integer userId;
 
