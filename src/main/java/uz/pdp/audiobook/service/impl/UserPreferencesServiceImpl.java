@@ -45,26 +45,24 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
     @Override
     @Transactional
     public void updateUserPreferences(Integer userId, UserPreferencesDTO preferencesDTO) {
-        // Validate that at least three categories are provided (the DTO validation ensures this).
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        // Remove existing preferences for this user
         userCategoryPreferenceRepository.deleteAllByUser(user);
 
-        // Load categories based on the provided IDs
         Set<Category> categories = new HashSet<>(categoryRepository.findAllById(preferencesDTO.getCategoryIds()));
         if (categories.size() < 3) {
             throw new RuntimeException("You must choose at least three valid categories");
         }
-        // Create new preference records
+
         for (Category category : categories) {
             UserCategoryPreference preference = new UserCategoryPreference();
             preference.setUser(user);
             preference.setCategory(category);
             userCategoryPreferenceRepository.save(preference);
         }
-        // Update user flags
+
         user.setPreferencesConfigured(true);
         user.setPreferencesSkipped(false);
 
@@ -75,7 +73,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
     public void skipUserPreferences(Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-        // Optionally remove existing preferences if any
+
         userCategoryPreferenceRepository.deleteAllByUser(user);
 
         user.setPreferencesConfigured(true);
