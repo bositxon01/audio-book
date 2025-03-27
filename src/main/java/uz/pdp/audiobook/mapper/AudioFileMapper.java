@@ -6,10 +6,12 @@ import uz.pdp.audiobook.payload.AudioFileDTO;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AudioFileMapper {
-    AudioFile toEntity(AudioFileDTO audioFileDTO);
-
     AudioFileDTO toDTO(AudioFile audioFile);
 
+    @Mapping(target = "id", ignore = true)
+    AudioFile toEntity(AudioFileDTO audioFileDTO);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    AudioFile partialUpdate(AudioFileDTO audioFileDTO, @MappingTarget AudioFile audioFile);
+    @Mapping(target = "id", ignore = true)
+    AudioFile updateAudioFileFromDTO(AudioFileDTO audioFileDTO, @MappingTarget AudioFile audioFile);
 }

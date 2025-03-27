@@ -9,6 +9,7 @@ import uz.pdp.audiobook.payload.AudiobookDTO;
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AudiobookMapper {
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "coverImage", expression = "java(mapToAttachment(dto.getCoverImageId(), entityManager))")
     @Mapping(target = "bookAttachment", expression = "java(mapToAttachment(dto.getBookAttachmentId(), entityManager))")
     @Mapping(target = "category", expression = "java(mapToCategory(dto.getCategoryId(), entityManager))")

@@ -34,9 +34,8 @@ public class AudioBookServiceImpl implements AudioBookService {
     @Override
     public ApiResult<AudiobookDTO> getAudioBookById(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
-        if (optionalAudiobook.isEmpty()) {
+        if (optionalAudiobook.isEmpty())
             return ApiResult.error("Audiobook not found with id: " + id);
-        }
 
         Audiobook audiobook = optionalAudiobook.get();
         AudiobookDTO audiobookDTO = audiobookMapper.toDTO(audiobook);
@@ -101,7 +100,7 @@ public class AudioBookServiceImpl implements AudioBookService {
                     audiobookRepository.save(existingAudiobook);
                     AudiobookDTO updatedDto = audiobookMapper.toDTO(existingAudiobook);
                     populateAssociations(existingAudiobook, updatedDto);
-                    return ApiResult.success(updatedDto);
+                    return ApiResult.success("Audiobook updated successfully", updatedDto);
                 })
                 .orElse(ApiResult.error("Audiobook not found with id: " + id));
     }
@@ -111,9 +110,8 @@ public class AudioBookServiceImpl implements AudioBookService {
     public ApiResult<Object> deleteAudioBook(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
 
-        if (optionalAudiobook.isEmpty()) {
+        if (optionalAudiobook.isEmpty())
             return ApiResult.error("Audiobook not found with id: " + id);
-        }
 
         Audiobook audiobook = optionalAudiobook.get();
         audiobook.setDeleted(true);
@@ -126,15 +124,16 @@ public class AudioBookServiceImpl implements AudioBookService {
     public ApiResult<List<AuthorDTO>> getAuthorsByAudiobookId(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
 
-        if (optionalAudiobook.isEmpty()) {
+        if (optionalAudiobook.isEmpty())
             return ApiResult.error("Audiobook not found with id: " + id);
-        }
 
         List<AudioBookAuthors> audioBookAuthors = audioBookAuthorsRepository.findByAudiobook_Id(id);
 
         List<AuthorDTO> authorDTOS = audioBookAuthors
                 .stream()
-                .map(oneAudioBookAuthors -> authorMapper.toDTO(oneAudioBookAuthors.getAuthor()))
+                .map(oneAudioBookAuthors ->
+                        authorMapper.toDTO(oneAudioBookAuthors.getAuthor())
+                )
                 .toList();
 
         return ApiResult.success(authorDTOS);
@@ -144,9 +143,8 @@ public class AudioBookServiceImpl implements AudioBookService {
     public ApiResult<List<GenreDTO>> getGenresByAudioBookId(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
 
-        if (optionalAudiobook.isEmpty()) {
+        if (optionalAudiobook.isEmpty())
             return ApiResult.error("Audiobook not found with id: " + id);
-        }
 
         List<AudioBookGenres> audioBookGenres = audioBookGenresRepository.findByAudiobook_Id(id);
 
@@ -165,9 +163,8 @@ public class AudioBookServiceImpl implements AudioBookService {
 
         AudioFile audioFile = audiobook.getAudioFile();
 
-        if (audioFile == null) {
+        if (audioFile == null)
             throw new RuntimeException("Audio file not found with id: " + id + " for audiobook: " + audiobook.getId());
-        }
 
         AudioFileDTO audioFileDTO = audioFileMapper.toDTO(audioFile);
 

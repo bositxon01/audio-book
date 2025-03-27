@@ -52,9 +52,8 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
         userCategoryPreferenceRepository.deleteAllByUser(user);
 
         Set<Category> categories = new HashSet<>(categoryRepository.findAllById(preferencesDTO.getCategoryIds()));
-        if (categories.size() < 3) {
+        if (categories.size() < 3)
             throw new RuntimeException("You must choose at least three valid categories");
-        }
 
         for (Category category : categories) {
             UserCategoryPreference preference = new UserCategoryPreference();

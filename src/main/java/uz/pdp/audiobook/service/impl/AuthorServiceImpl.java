@@ -52,9 +52,12 @@ public class AuthorServiceImpl implements AuthorService {
     public ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDTO authorDTO) {
         return authorRepository.findById(id)
                 .map(existingAuthor -> {
-                    authorMapper.updateAuthorFromDto(authorDTO, existingAuthor);
+                    authorMapper.updateAuthorFromDTO(authorDTO, existingAuthor);
                     authorRepository.save(existingAuthor);
-                    return ApiResult.success(authorMapper.toDTO(existingAuthor));
+                    return ApiResult.success(
+                            "Author updated successfully",
+                            authorMapper.toDTO(existingAuthor)
+                    );
                 })
                 .orElse(ApiResult.error("Author not found with id: " + id));
     }
@@ -64,9 +67,8 @@ public class AuthorServiceImpl implements AuthorService {
     public ApiResult<Object> deleteAuthor(Integer id) {
         Optional<Author> optionalAuthor = authorRepository.findById(id);
 
-        if (optionalAuthor.isEmpty()) {
+        if (optionalAuthor.isEmpty())
             return ApiResult.error("Author not found with id: " + id);
-        }
 
         Author author = optionalAuthor.get();
         author.setDeleted(true);

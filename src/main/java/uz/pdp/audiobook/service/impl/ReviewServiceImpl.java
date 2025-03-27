@@ -53,7 +53,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ApiResult<ReviewDTO> getReview(Integer id) {
-        return reviewRepository.findByIdAndDeletedFalse(id)
+        return reviewRepository.findById(id)
                 .map(reviewMapper::toDTO)
                 .map(ApiResult::success)
                 .orElse(ApiResult.error("Review not found with id " + id));
@@ -61,7 +61,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ApiResult<List<ReviewDTO>> getAllReviews() {
-        List<ReviewDTO> reviews = reviewRepository.findByDeletedFalse()
+        List<ReviewDTO> reviews = reviewRepository.findAll()
                 .stream()
                 .map(reviewMapper::toDTO)
                 .collect(Collectors.toList());
@@ -71,11 +71,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ApiResult<ReviewDTO> updateReview(Integer id, ReviewDTO reviewDTO) {
-        return reviewRepository.findByIdAndDeletedFalse(id)
+        return reviewRepository.findById(id)
                 .map(existingReview -> {
-                    reviewMapper.updateReview(reviewDTO, existingReview);
+                    reviewMapper.updateReviewFromDTO(reviewDTO, existingReview);
                     reviewRepository.save(existingReview);
-                    return ApiResult.success(reviewMapper.toDTO(existingReview));
+                    return ApiResult.success(
+                            "Review updated successfully",
+                            reviewMapper.toDTO(existingReview)
+                    );
                 })
                 .orElse(ApiResult.error("Review not found with id: " + id));
     }
@@ -83,17 +86,16 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public ApiResult<Object> deleteReview(Integer id) {
-        Optional<Review> optionalReview = reviewRepository.findByIdAndDeletedFalse(id);
+        Optional<Review> optionalReview = reviewRepository.findById(id);
 
-        if (optionalReview.isEmpty()) {
+        if (optionalReview.isEmpty())
             return ApiResult.error("Review not found with id: " + id);
-        }
 
         Review review = optionalReview.get();
         review.setDeleted(true);
         reviewRepository.save(review);
 
-        return ApiResult.success("Review deleted successfully.");
+        return ApiResult.success("Review deleted successfully");
     }
 
     @Override
