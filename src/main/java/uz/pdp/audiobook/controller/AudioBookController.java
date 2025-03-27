@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.*;
 import uz.pdp.audiobook.service.AudioBookService;
+import uz.pdp.audiobook.service.ReviewService;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class AudioBookController {
 
     private final AudioBookService audioBookService;
+    private final ReviewService reviewService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResult<AudiobookDTO>> getAudioBookById(@PathVariable("id") Integer id) {
@@ -46,6 +48,12 @@ public class AudioBookController {
     //todo AudioFileDTO creating and writing this url
     public ResponseEntity<ApiResult<AudioFileDTO>> getAudioFileById(@PathVariable("id") Integer id) {
         ApiResult<AudioFileDTO> apiResult = audioBookService.getAudioFileByAudioBookId(id);
+        return ResponseEntity.ok(apiResult);
+    }
+
+    @GetMapping("/average-rating/{audioBookId}")
+    public ResponseEntity<ApiResult<Double>> getAverageRating(@PathVariable Integer audioBookId) {
+        ApiResult<Double> apiResult = reviewService.getAverageRating(audioBookId);
         return ResponseEntity.ok(apiResult);
     }
 
