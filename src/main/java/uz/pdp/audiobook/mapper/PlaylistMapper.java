@@ -20,7 +20,7 @@ public interface PlaylistMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
-    void partialUpdate(PlaylistDTO playlistDTO, @MappingTarget Playlist playlist);
+    void updatePlaylistFromDTO(PlaylistDTO playlistDTO, @MappingTarget Playlist playlist);
 
     default List<Integer> mapAudiobooks(List<PlaylistAudiobooks> playlistAudiobooks) {
         if (playlistAudiobooks == null) {

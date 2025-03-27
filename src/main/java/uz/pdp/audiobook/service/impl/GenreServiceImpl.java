@@ -65,9 +65,12 @@ public class GenreServiceImpl implements GenreService {
     public ApiResult<GenreDTO> updateGenre(Integer id, GenreDTO genreDTO) {
         return genreRepository.findById(id)
                 .map(existingGenre -> {
-                    genreMapper.updateGenreFromDto(genreDTO, existingGenre);
+                    genreMapper.updateGenreFromDTO(genreDTO, existingGenre);
                     genreRepository.save(existingGenre);
-                    return ApiResult.success(genreMapper.toDTO(existingGenre));
+                    return ApiResult.success(
+                            "Genre updated successfully",
+                            genreMapper.toDTO(existingGenre)
+                    );
                 })
                 .orElse(ApiResult.error("Genre not found with id: " + id));
     }
@@ -77,9 +80,8 @@ public class GenreServiceImpl implements GenreService {
     public ApiResult<Object> deleteGenre(Integer id) {
         Optional<Genre> optionalGenre = genreRepository.findById(id);
 
-        if (optionalGenre.isEmpty()) {
+        if (optionalGenre.isEmpty())
             return ApiResult.error("Genre not found with id: " + id);
-        }
 
         Genre genre = optionalGenre.get();
         genre.setDeleted(true);

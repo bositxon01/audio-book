@@ -10,13 +10,13 @@ import java.util.List;
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AttachmentMapper {
 
-    Attachment toEntity(AttachmentDTO attachmentDTO);
-
     @Mapping(target = "filename", ignore = true)
     AttachmentDTO toDTO(Attachment attachment);
 
     List<AttachmentDTO> toDTO(List<Attachment> attachments);
 
+    Attachment toEntity(AttachmentDTO attachmentDTO);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Attachment partialUpdate(AttachmentDTO attachmentDTO, @MappingTarget Attachment attachment);
+    Attachment updateAttachmentFromDTO(AttachmentDTO attachmentDTO, @MappingTarget Attachment attachment);
 }

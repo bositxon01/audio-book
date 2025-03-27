@@ -8,11 +8,12 @@ import uz.pdp.audiobook.payload.AuthorDTO;
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AuthorMapper {
 
-    Author toEntity(AuthorDTO dto);
-
     AuthorDTO toDTO(Author author);
 
-    @Mapping(target = "id", ignore = true) // ID o'zgarmasligi uchun
-    void updateAuthorFromDto(AuthorDTO dto, @MappingTarget Author author);
+    @Mapping(target = "id", ignore = true)
+    Author toEntity(AuthorDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    void updateAuthorFromDTO(AuthorDTO dto, @MappingTarget Author author);
 
 }

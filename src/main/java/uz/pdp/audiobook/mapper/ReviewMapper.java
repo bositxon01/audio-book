@@ -12,6 +12,7 @@ public interface ReviewMapper {
     @Mapping(target = "audioBookId", source = "audiobook.id")
     ReviewDTO toDTO(Review review);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "audiobook", ignore = true)
     Review toEntity(ReviewDTO reviewDTO);
@@ -19,6 +20,6 @@ public interface ReviewMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "audiobook", ignore = true)
-    void updateReview(ReviewDTO reviewDTO, @MappingTarget Review review);
+    void updateReviewFromDTO(ReviewDTO reviewDTO, @MappingTarget Review review);
 
 }

@@ -88,7 +88,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         return playlistRepository.findById(id)
                 .map(existingPlaylist -> {
 
-                    playlistMapper.partialUpdate(playlistDTO, existingPlaylist);
+                    playlistMapper.updatePlaylistFromDTO(playlistDTO, existingPlaylist);
 
                     if (playlistDTO.getAudiobooksId() != null) {
 
@@ -112,7 +112,10 @@ public class PlaylistServiceImpl implements PlaylistService {
                     }
 
                     playlistRepository.save(existingPlaylist);
-                    return ApiResult.success(playlistMapper.toDTO(existingPlaylist));
+                    return ApiResult.success(
+                            "Playlist updated successfully",
+                            playlistMapper.toDTO(existingPlaylist)
+                    );
                 })
                 .orElse(ApiResult.error("Playlist not found with id: " + id));
     }
@@ -122,9 +125,8 @@ public class PlaylistServiceImpl implements PlaylistService {
     public ApiResult<Object> deletePlaylist(Integer id) {
         Optional<Playlist> optionalPlaylist = playlistRepository.findById(id);
 
-        if (optionalPlaylist.isEmpty()) {
+        if (optionalPlaylist.isEmpty())
             return ApiResult.error("Playlist not found with id: " + id);
-        }
 
         Playlist playlist = optionalPlaylist.get();
         playlist.setDeleted(true);

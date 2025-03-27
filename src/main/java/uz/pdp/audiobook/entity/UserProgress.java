@@ -12,7 +12,7 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"user", "audiobook", "audioFile"})
+@ToString(callSuper = true, exclude = {"user", "audiobook"})
 @Entity
 @Table(name = "user_progress",
         uniqueConstraints = @UniqueConstraint(
@@ -32,14 +32,6 @@ public class UserProgress extends AbsIntegerEntity {
     @ManyToOne
     @JoinColumn(name = "audiobook_id", nullable = false)
     private Audiobook audiobook;
-
-    @ManyToOne
-    private AudioFile audioFile;
-
-    @Min(0)
-    @Max(100)
-    @Column(nullable = false)
-    private Integer progressPercentage;
 
     @Min(0)
     private Integer lastAudioFilePosition; // Position in seconds where the user stopped

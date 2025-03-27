@@ -10,16 +10,14 @@ import java.util.List;
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface GenreMapper {
 
-    // GenreDTO -> Genre (Entity)
-    Genre toEntity(GenreDTO dto);
-
-    // Genre (Entity) -> GenreDTO
     GenreDTO toDTO(Genre genre);
 
     List<GenreDTO> toDTO(List<Genre> genreList);
 
-    // Mavjud Genre obyektini DTO asosida yangilash
-    @Mapping(target = "id", ignore = true) // ID o'zgarmasligi uchun
-    void updateGenreFromDto(GenreDTO dto, @MappingTarget Genre genre);
+    @Mapping(target = "id", ignore = true)
+    Genre toEntity(GenreDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    void updateGenreFromDTO(GenreDTO dto, @MappingTarget Genre genre);
 
 }
