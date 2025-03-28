@@ -2,6 +2,7 @@ package uz.pdp.audiobook.service.impl;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.*;
@@ -34,6 +35,7 @@ public class AudioBookServiceImpl implements AudioBookService {
     @Override
     public ApiResult<AudiobookDTO> getAudioBookById(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
+
         if (optionalAudiobook.isEmpty())
             return ApiResult.error("Audiobook not found with id: " + id);
 
@@ -60,6 +62,7 @@ public class AudioBookServiceImpl implements AudioBookService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudiobookDTO> createAudioBook(AudiobookDTO audiobookDTO) {
 
         Audiobook audiobook = audiobookMapper.toEntity(audiobookDTO, entityManager);
@@ -93,6 +96,7 @@ public class AudioBookServiceImpl implements AudioBookService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudiobookDTO> updateAudioBook(Integer id, AudiobookDTO audiobookDTO) {
         return audiobookRepository.findById(id)
                 .map(existingAudiobook -> {
@@ -107,6 +111,7 @@ public class AudioBookServiceImpl implements AudioBookService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<Object> deleteAudioBook(Integer id) {
         Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(id);
 

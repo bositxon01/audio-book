@@ -192,4 +192,19 @@ public class AuthServiceImpl implements AuthService {
         return ApiResult.success("Password reset successful. You can now log in with your new password.");
     }
 
+    @Override
+    @Transactional
+    public ApiResult<String> promoteToAdmin(String username) {
+        User user = userRepository.findByUsernameAndDeletedFalse(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        if (user.getRole() == Role.ADMIN || user.getRole() == Role.SUPER_ADMIN) {
+            return ApiResult.error("User is already an admin or super admin!");
+        }
+
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
+        return ApiResult.success("User" + username + " has been promoted to admin");
+    }
+
 }

@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Category;
@@ -23,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<CategoryDTO> createCategory(CategoryDTO categoryDTO) {
         Category category = categoryMapper.toEntity(categoryDTO);
         categoryRepository.save(category);
@@ -30,6 +32,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<List<CategoryDTO>> createCategories(List<CategoryDTO> categoryDTOList) {
         List<Category> categories = new ArrayList<>();
 
@@ -62,6 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO) {
         return categoryRepository.findById(id)
                 .map(existingCategory -> {
@@ -77,6 +82,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<Object> deleteCategory(Integer id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 

@@ -5,16 +5,26 @@ import lombok.Getter;
 import java.util.EnumSet;
 import java.util.Set;
 
+import static uz.pdp.audiobook.enums.Permission.*;
+
 @Getter
 public enum Role {
     USER(EnumSet.of(
-            Permission.LISTEN_AUDIOBOOK,
-            Permission.READ_AUDIOBOOK,
-            Permission.WRITE_REVIEW,
-            Permission.RATE_AUDIOBOOK)
+            LISTEN_AUDIOBOOK,
+            READ_AUDIOBOOK,
+            WRITE_REVIEW,
+            RATE_AUDIOBOOK)
     ),
 
-    ADMIN(EnumSet.allOf(Permission.class)),
+    ADMIN(EnumSet.of(
+            LISTEN_AUDIOBOOK,
+            READ_AUDIOBOOK,
+            WRITE_REVIEW,
+            RATE_AUDIOBOOK,
+            MANAGE_AUDIOBOOKS,
+            MANAGE_CATEGORIES,
+            MANAGE_REVIEWS)
+    ),
 
     SUPER_ADMIN(EnumSet.allOf(Permission.class));
 
