@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +43,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     private static final long MAX_FILE_SIZE = 100L * 1024 * 1024;
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AttachmentDTO> getAttachmentById(Integer id) {
         return attachmentRepository.findById(id)
                 .map(attachmentMapper::toDTO)
@@ -50,6 +52,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<List<AttachmentDTO>> getAllAttachments() {
         List<AttachmentDTO> attachmentDTOS = attachmentRepository.findAll()
                 .stream()
@@ -60,6 +63,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AttachmentDTO> upload(MultipartFile multipartFile) {
         try {
             if (multipartFile.isEmpty())

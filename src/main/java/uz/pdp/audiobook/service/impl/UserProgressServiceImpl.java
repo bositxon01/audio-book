@@ -21,6 +21,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserProgressServiceImpl implements UserProgressService {
+
     private final UserProgressRepository userProgressRepository;
     private final UserProgressMapper userProgressMapper;
     private final UserRepository userRepository;

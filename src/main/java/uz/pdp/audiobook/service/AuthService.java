@@ -17,4 +17,6 @@ public interface AuthService extends UserDetailsService {
 
     ApiResult<String> resetPassword(String email, String token, String newPassword);
 
+    ApiResult<String> promoteToAdmin(String username);
+
 }

@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Genre;
@@ -24,6 +25,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<GenreDTO> createGenre(GenreDTO genreDTO) {
         Genre genre = genreMapper.toEntity(genreDTO);
         genreRepository.save(genre);
@@ -31,6 +33,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<List<GenreDTO>> createGenres(List<GenreDTO> genreDTOList) {
         List<Genre> genres = new ArrayList<>();
 
@@ -62,6 +66,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<GenreDTO> updateGenre(Integer id, GenreDTO genreDTO) {
         return genreRepository.findById(id)
                 .map(existingGenre -> {
@@ -77,6 +82,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<Object> deleteGenre(Integer id) {
         Optional<Genre> optionalGenre = genreRepository.findById(id);
 
