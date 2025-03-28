@@ -65,9 +65,12 @@ public class CategoryServiceImpl implements CategoryService {
     public ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO) {
         return categoryRepository.findById(id)
                 .map(existingCategory -> {
-                    categoryMapper.partialUpdate(categoryDTO, existingCategory);
+                    categoryMapper.updateCategoryFromDTO(categoryDTO, existingCategory);
                     categoryRepository.save(existingCategory);
-                    return ApiResult.success(categoryMapper.toDTO(existingCategory));
+                    return ApiResult.success(
+                            "Category updated successfully",
+                            categoryMapper.toDTO(existingCategory)
+                    );
                 })
                 .orElse(ApiResult.error("Category not found with id: " + id));
     }
@@ -77,9 +80,8 @@ public class CategoryServiceImpl implements CategoryService {
     public ApiResult<Object> deleteCategory(Integer id) {
         Optional<Category> optionalCategory = categoryRepository.findById(id);
 
-        if (optionalCategory.isEmpty()) {
+        if (optionalCategory.isEmpty())
             return ApiResult.error("Category not found with id: " + id);
-        }
 
         Category category = optionalCategory.get();
         category.setDeleted(true);

@@ -8,12 +8,14 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
-    Category toEntity(CategoryDTO categoryDTO);
-
     CategoryDTO toDTO(Category category);
 
     List<CategoryDTO> toDTO(List<Category> categoryList);
 
+    @Mapping(target = "id", ignore = true)
+    Category toEntity(CategoryDTO categoryDTO);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void partialUpdate(CategoryDTO categoryDTO, @MappingTarget Category category);
+    @Mapping(target = "id", ignore = true)
+    void updateCategoryFromDTO(CategoryDTO categoryDTO, @MappingTarget Category category);
 }
