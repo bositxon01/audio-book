@@ -13,7 +13,7 @@ import uz.pdp.audiobook.payload.AudioFileDTO;
 import uz.pdp.audiobook.service.AudioFileService;
 
 @RestController
-@RequestMapping("/api/audiofile")
+@RequestMapping("/api/audio-file")
 @RequiredArgsConstructor
 @Tag(name = "AudioFile API", description = "Endpoints for uploading, updating, downloading, and deleting audio files")
 public class AudioFileController {
@@ -29,7 +29,6 @@ public class AudioFileController {
         return ResponseEntity.ok(result);
     }
 
-
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResult<AudioFileDTO>> updateAudioFile(
             @PathVariable Integer id,
@@ -44,10 +43,10 @@ public class AudioFileController {
         return audioFileService.downloadAudioFile(id);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResult<Object>> deleteAudioFile(@PathVariable Integer id) {
         ApiResult<Object> result = audioFileService.deleteAudioFile(id);
         return ResponseEntity.ok(result);
     }
+
 }

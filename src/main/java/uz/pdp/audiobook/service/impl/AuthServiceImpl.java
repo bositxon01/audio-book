@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -194,6 +195,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<String> promoteToAdmin(String username) {
         User user = userRepository.findByUsernameAndDeletedFalse(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));

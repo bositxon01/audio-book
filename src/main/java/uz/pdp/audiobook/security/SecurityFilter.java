@@ -38,7 +38,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
 
-        // Skip authentication for public endpoints
         if (path.startsWith("/api/auth/forget-password") ||
                 path.startsWith("/api/auth/reset-password")) {
             filterChain.doFilter(request, response);

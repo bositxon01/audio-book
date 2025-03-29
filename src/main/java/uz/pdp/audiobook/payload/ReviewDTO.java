@@ -2,7 +2,6 @@ package uz.pdp.audiobook.payload;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,17 +14,17 @@ public class ReviewDTO {
 
     private Integer id;
 
-    @NotNull
+    @NotNull(message = "User id cannot be null")
     private Integer userId;
 
-    @NotNull
+    @NotNull(message = "Audiobook id cannot be null")
     private Integer audioBookId;
 
-    @NotBlank
     private String content;
 
-    @NotNull
+    @NotNull(message = "Rating cannot be null")
     @Min(1)
     @Max(5)
     private Integer rating;
+
 }

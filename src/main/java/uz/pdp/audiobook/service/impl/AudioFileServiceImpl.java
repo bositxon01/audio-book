@@ -11,10 +11,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.SAXException;
 import uz.pdp.audiobook.entity.AudioFile;
 import uz.pdp.audiobook.entity.Audiobook;
 import uz.pdp.audiobook.mapper.AudioFileMapper;
@@ -48,6 +48,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudioFileDTO> uploadAudioFile(MultipartFile file, Integer audiobookId) {
         if (file.isEmpty()) {
             return ApiResult.error("File is empty");
@@ -82,6 +83,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudioFileDTO> updateAudioFile(Integer id, MultipartFile file) {
         Optional<AudioFile> optionalAudioFile = audioFileRepository.findById(id);
         if (optionalAudioFile.isEmpty()) {
@@ -94,19 +96,15 @@ public class AudioFileServiceImpl implements AudioFileService {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path filePath = Path.of(AUDIO_FILE_DIRECTORY + fileName);
 
-
             Files.deleteIfExists(Path.of(audioFile.getFileUrl()));
 
-
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
 
             audioFile.setFileUrl(filePath.toString());
             audioFile.setDurationSeconds(getAudioDuration(file));
             audioFileRepository.save(audioFile);
 
             return ApiResult.success(audioFileMapper.toDTO(audioFile));
-
         } catch (IOException e) {
             return ApiResult.error("File update failed: " + e.getMessage());
         }
@@ -127,7 +125,6 @@ public class AudioFileServiceImpl implements AudioFileService {
             Resource resource = new UrlResource(filePath.toUri());
 
             if (!resource.exists() || !resource.isReadable()) {
-                //throw new RuntimeException("File cannot be read or does not exist: " + filePath);
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(null);
@@ -150,11 +147,11 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<Object> deleteAudioFile(Integer id) {
         Optional<AudioFile> optionalAudioFile = audioFileRepository.findById(id);
-        if (optionalAudioFile.isEmpty()) {
+        if (optionalAudioFile.isEmpty())
             return ApiResult.error("Audio file not found with id: " + id);
-        }
 
         AudioFile audioFile = optionalAudioFile.get();
 
@@ -171,15 +168,22 @@ public class AudioFileServiceImpl implements AudioFileService {
     private Integer getAudioDuration(MultipartFile file) {
         try (InputStream inputStream = file.getInputStream()) {
             Metadata metadata = new Metadata();
-            Mp3Parser parser = new Mp3Parser();
-            parser.parse(inputStream, new BodyContentHandler(), metadata, new ParseContext());
+            Mp3Parser mp3Parser = new Mp3Parser();
+
+            mp3Parser.parse(inputStream,
+                    new BodyContentHandler(),
+                    metadata,
+                    new ParseContext()
+            );
 
             String durationStr = metadata.get("xmpDM:duration");
+
             if (durationStr != null) {
-                return (int) (Double.parseDouble(durationStr) / 1000); // Millisekunddan soniyaga o'tkazadi
+                double durationInSeconds = Double.parseDouble(durationStr);
+                return (int) Math.round(durationInSeconds);
             }
-        } catch (IOException | SAXException | org.apache.tika.exception.TikaException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return 0;
     }

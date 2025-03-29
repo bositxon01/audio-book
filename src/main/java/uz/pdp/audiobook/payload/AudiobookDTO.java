@@ -1,15 +1,16 @@
 package uz.pdp.audiobook.payload;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class AudiobookDTO {
 
     private Integer id;
@@ -21,10 +22,13 @@ public class AudiobookDTO {
 
     private Integer duration;
 
+    @NotNull
     private Integer coverImageId;
 
+    @NotNull
     private Integer bookAttachmentId;
 
+    @NotNull
     private Integer categoryId;
 
     private List<Integer> authorIds;

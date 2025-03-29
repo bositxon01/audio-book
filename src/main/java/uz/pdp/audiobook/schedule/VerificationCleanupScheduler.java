@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class VerificationCleanupScheduler {
+
     private final Map<String, VerificationInfo> verificationData;
 
     @Scheduled(fixedRate = 2, timeUnit = TimeUnit.MINUTES)
@@ -18,8 +19,7 @@ public class VerificationCleanupScheduler {
         long now = System.currentTimeMillis();
 
         verificationData.entrySet()
-                .removeIf(entry ->
-                        (now > entry.getValue().getExpiryTime()));
+                .removeIf(entry -> (now > entry.getValue().getExpiryTime()));
     }
 
 }

@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.pdp.audiobook.mapper.UserProgressMapper;
 import uz.pdp.audiobook.entity.Audiobook;
 import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.entity.UserProgress;
+import uz.pdp.audiobook.mapper.UserProgressMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.UserProgressDTO;
 import uz.pdp.audiobook.repository.AudiobookRepository;
@@ -41,6 +41,7 @@ public class UserProgressServiceImpl implements UserProgressService {
                 .stream()
                 .map(userProgressMapper::toDTO)
                 .toList();
+
         return ApiResult.success(userProgressDTOS);
     }
 

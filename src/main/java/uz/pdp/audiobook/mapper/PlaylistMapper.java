@@ -8,8 +8,10 @@ import uz.pdp.audiobook.payload.PlaylistDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        componentModel = MappingConstants.ComponentModel.SPRING)
 public interface PlaylistMapper {
+
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "audiobooksId", expression = "java(mapAudiobooks(playlist.getAudiobooks()))")
     PlaylistDTO toDTO(Playlist playlist);
@@ -31,4 +33,5 @@ public interface PlaylistMapper {
                 .map(pa -> pa.getAudiobook().getId())
                 .toList();
     }
+
 }

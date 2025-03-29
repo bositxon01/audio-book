@@ -2,16 +2,15 @@ package uz.pdp.audiobook.payload;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
-public class UserProgressDTO implements Serializable {
+@Data
+public class UserProgressDTO {
+
     private Integer id;
 
     @NotNull(message = "User ID cannot be null")
@@ -27,4 +26,5 @@ public class UserProgressDTO implements Serializable {
     private Integer lastPage;
 
     private boolean completed;
+
 }

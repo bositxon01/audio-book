@@ -1,7 +1,6 @@
 package uz.pdp.audiobook.service;
 
 import uz.pdp.audiobook.payload.ApiResult;
-import uz.pdp.audiobook.payload.AudiobookDTO;
 import uz.pdp.audiobook.payload.ReviewDTO;
 
 import java.util.List;
@@ -19,4 +18,5 @@ public interface ReviewService {
     ApiResult<Object> deleteReview(Integer id);
 
     ApiResult<Double> getAverageRating(Integer audioBookId);
+
 }

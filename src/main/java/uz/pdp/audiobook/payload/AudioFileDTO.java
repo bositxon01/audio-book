@@ -1,12 +1,12 @@
 package uz.pdp.audiobook.payload;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class AudioFileDTO {
 
     private Integer id;
@@ -18,4 +18,5 @@ public class AudioFileDTO {
     private String originalFilename;
 
     private String contentType;
+
 }

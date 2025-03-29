@@ -7,6 +7,7 @@ import uz.pdp.audiobook.payload.UserProgressDTO;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserProgressMapper {
+
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "audiobookId", source = "audiobook.id")
     UserProgressDTO toDTO(UserProgress userProgress);
@@ -18,4 +19,5 @@ public interface UserProgressMapper {
 
     @Mapping(target = "id", ignore = true)
     void updateUserProgressFromDTO(UserProgressDTO userProgressDTO, @MappingTarget UserProgress userProgress);
+
 }

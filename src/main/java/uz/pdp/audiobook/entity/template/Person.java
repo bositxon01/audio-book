@@ -29,4 +29,5 @@ public abstract class Person extends AbsIntegerEntity {
     @Past(message = "Date of birth must be in the past")
     @Column(nullable = false)
     private LocalDate dateOfBirth;
+
 }

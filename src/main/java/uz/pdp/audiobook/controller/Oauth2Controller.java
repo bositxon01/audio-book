@@ -23,4 +23,5 @@ public class Oauth2Controller {
         ApiResult<String> apiResult = oauth2Service.login(authentication);
         return ResponseEntity.ok(apiResult);
     }
+
 }

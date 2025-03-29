@@ -1,18 +1,18 @@
 package uz.pdp.audiobook.payload;
 
-import jakarta.persistence.Column;
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
 public class GenreDTO {
 
     private Integer id;
 
-    @Column(unique = true, nullable = false, length = 50)
+    @NotBlank(message = "Genre name cannot be blank")
     private String name;
 
 }

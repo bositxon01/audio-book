@@ -7,6 +7,7 @@ import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.AudioFileDTO;
 
 public interface AudioFileService {
+
     ApiResult<AudioFileDTO> uploadAudioFile(MultipartFile file, Integer audioBookId);
 
     ApiResult<AudioFileDTO> updateAudioFile(Integer id, MultipartFile file);
@@ -14,4 +15,5 @@ public interface AudioFileService {
     ResponseEntity<Resource> downloadAudioFile(Integer id);
 
     ApiResult<Object> deleteAudioFile(Integer id);
+
 }

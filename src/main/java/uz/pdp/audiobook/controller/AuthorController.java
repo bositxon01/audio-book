@@ -49,4 +49,5 @@ public class AuthorController {
         ApiResult<Object> apiResult = authorService.deleteAuthor(id);
         return ResponseEntity.ok(apiResult);
     }
+
 }

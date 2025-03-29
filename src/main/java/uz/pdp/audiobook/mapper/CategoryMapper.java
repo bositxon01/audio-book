@@ -6,8 +6,10 @@ import uz.pdp.audiobook.payload.CategoryDTO;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
+
     CategoryDTO toDTO(Category category);
 
     List<CategoryDTO> toDTO(List<Category> categoryList);
@@ -18,4 +20,5 @@ public interface CategoryMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     void updateCategoryFromDTO(CategoryDTO categoryDTO, @MappingTarget Category category);
+
 }

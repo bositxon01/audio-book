@@ -17,5 +17,6 @@ public class HomeController {
     public String home(@RequestParam(name = "token", required = false) String token) {
         return "OAuth2 Login Successful! Your Token: " + token;
     }
+
 }
 

@@ -30,16 +30,16 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        List<UserCategoryPreference> preferences = userCategoryPreferenceRepository.findAllByUser(user);
+        var preferences = userCategoryPreferenceRepository.findAllByUser(user);
 
         Set<Integer> categoryIds = preferences.stream()
                 .map(pref -> pref.getCategory().getId())
                 .collect(Collectors.toSet());
 
-        UserPreferencesDTO dto = new UserPreferencesDTO();
-        dto.setCategoryIds(categoryIds);
+        var userPreferencesDTO = new UserPreferencesDTO();
+        userPreferencesDTO.setCategoryIds(categoryIds);
 
-        return dto;
+        return userPreferencesDTO;
     }
 
     @Override
@@ -51,7 +51,10 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 
         userCategoryPreferenceRepository.deleteAllByUser(user);
 
-        Set<Category> categories = new HashSet<>(categoryRepository.findAllById(preferencesDTO.getCategoryIds()));
+        List<Category> categoryRepositoryAllById = categoryRepository.findAllById(preferencesDTO.getCategoryIds());
+
+        Set<Category> categories = new HashSet<>(categoryRepositoryAllById);
+
         if (categories.size() < 3)
             throw new RuntimeException("You must choose at least three valid categories");
 

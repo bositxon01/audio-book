@@ -16,4 +16,5 @@ public interface PlaylistService {
     ApiResult<PlaylistDTO> updatePlaylist(Integer id, PlaylistDTO playlistDTO);
 
     ApiResult<Object> deletePlaylist(Integer id);
+
 }

@@ -18,4 +18,5 @@ public interface CategoryService {
     ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO);
 
     ApiResult<Object> deleteCategory(Integer id);
+
 }

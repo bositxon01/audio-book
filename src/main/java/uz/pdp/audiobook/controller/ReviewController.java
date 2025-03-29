@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
-import uz.pdp.audiobook.payload.AudiobookDTO;
 import uz.pdp.audiobook.payload.ReviewDTO;
 import uz.pdp.audiobook.service.ReviewService;
 
@@ -35,6 +34,12 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<ApiResult<List<ReviewDTO>>> getAllReviews() {
         ApiResult<List<ReviewDTO>> apiResult = reviewService.getAllReviews();
+        return ResponseEntity.ok(apiResult);
+    }
+
+    @GetMapping("/average-rating")
+    public ResponseEntity<ApiResult<Double>> getAverageRating(@RequestParam Integer id) {
+        ApiResult<Double> apiResult = reviewService.getAverageRating(id);
         return ResponseEntity.ok(apiResult);
     }
 

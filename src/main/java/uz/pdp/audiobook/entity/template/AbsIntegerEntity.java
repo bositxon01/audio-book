@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @ToString
 @MappedSuperclass
 public abstract class AbsIntegerEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,4 +28,5 @@ public abstract class AbsIntegerEntity {
 
     @Column(nullable = false)
     private boolean deleted = false;
+
 }

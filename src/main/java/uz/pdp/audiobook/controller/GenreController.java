@@ -55,4 +55,5 @@ public class GenreController {
         ApiResult<Object> apiResult = genreService.deleteGenre(id);
         return ResponseEntity.ok(apiResult);
     }
+
 }

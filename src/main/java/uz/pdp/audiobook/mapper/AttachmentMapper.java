@@ -19,4 +19,5 @@ public interface AttachmentMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Attachment updateAttachmentFromDTO(AttachmentDTO attachmentDTO, @MappingTarget Attachment attachment);
+
 }

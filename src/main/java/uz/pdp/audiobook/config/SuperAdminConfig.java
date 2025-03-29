@@ -8,7 +8,6 @@ import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.enums.Role;
 import uz.pdp.audiobook.repository.UserRepository;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import static uz.pdp.audiobook.utils.AuthConstants.*;
@@ -25,10 +24,11 @@ public class SuperAdminConfig {
         User user = new User();
 
         if (userRepository.findByUsernameAndDeletedFalse(SUPER_ADMIN_GMAIL).isEmpty()) {
+
             user.setUsername(SUPER_ADMIN_GMAIL);
             user.setPassword(passwordEncoder.encode(SUPER_PASSWORD));
             user.setRole(Role.SUPER_ADMIN);
-            user.setDateOfBirth(Date.valueOf(LocalDate.of(1990, 1, 1)).toLocalDate());
+            user.setDateOfBirth(LocalDate.of(1990, 1, 1));
             user.setFirstName(SUPER_ADMIN);
             user.setLastName(SUPER_ADMIN);
             userRepository.save(user);
@@ -37,4 +37,5 @@ public class SuperAdminConfig {
 
         }
     }
+
 }
