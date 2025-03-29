@@ -6,5 +6,4 @@ import uz.pdp.audiobook.entity.Audiobook;
 
 @Repository
 public interface AudiobookRepository extends JpaRepository<Audiobook, Integer> {
-
 }
