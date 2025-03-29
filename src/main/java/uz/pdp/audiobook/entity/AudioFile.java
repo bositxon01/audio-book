@@ -2,7 +2,6 @@ package uz.pdp.audiobook.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -15,6 +14,7 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @Setter
 @ToString(exclude = "audiobook")
 @Entity
+@Builder
 
 @SQLRestriction(value = "deleted = false")
 @SQLDelete(sql = "UPDATE audio_file SET deleted = true WHERE id = ?")
@@ -25,6 +25,12 @@ public class AudioFile extends AbsIntegerEntity {
 
     @Column(nullable = false)
     private Integer durationSeconds; // Qismning davomiyligi (sekundlarda)
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String originalFilename;
+
+    @Column(nullable = false)
+    private String contentType;
 
     @OneToOne
     private Audiobook audiobook; // Audiokitob bilan bog‘lash
