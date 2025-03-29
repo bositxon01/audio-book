@@ -15,4 +15,7 @@ public class AudioFileDTO {
 
     private Integer durationSeconds;
 
+    private String originalFilename;
+
+    private String contentType;
 }

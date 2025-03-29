@@ -7,6 +7,9 @@ import org.apache.tika.parser.mp3.Mp3Parser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,8 +27,11 @@ import uz.pdp.audiobook.service.AudioFileService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,19 +62,19 @@ public class AudioFileServiceImpl implements AudioFileService {
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path filePath = Path.of(AUDIO_FILE_DIRECTORY + fileName);
 
-
             Files.createDirectories(filePath.getParent());
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-
-            AudioFile audioFile = new AudioFile();
-            audioFile.setFileUrl(filePath.toString());
-            audioFile.setDurationSeconds(getAudioDuration(file));
-            audioFile.setAudiobook(optionalAudiobook.get());
+            AudioFile audioFile = AudioFile.builder()
+                    .audiobook(optionalAudiobook.get())
+                    .contentType(file.getContentType())
+                    .originalFilename(file.getOriginalFilename())
+                    .durationSeconds(getAudioDuration(file))
+                    .fileUrl(filePath.toString())
+                    .build();
 
             audioFileRepository.save(audioFile);
             return ApiResult.success(audioFileMapper.toDTO(audioFile));
-
         } catch (IOException e) {
             return ApiResult.error("File upload failed: " + e.getMessage());
         }
@@ -115,22 +121,32 @@ public class AudioFileServiceImpl implements AudioFileService {
 
         AudioFile audioFile = optionalAudioFile.get();
         try {
-            Path filePath = Path.of(audioFile.getFileUrl());
+            Path filePath = Paths.get(audioFile.getFileUrl())
+                    .toAbsolutePath().normalize();
+
             Resource resource = new UrlResource(filePath.toUri());
 
             if (!resource.exists() || !resource.isReadable()) {
-                throw new RuntimeException("File cannot be read or does not exist: " + filePath);
+                //throw new RuntimeException("File cannot be read or does not exist: " + filePath);
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(null);
             }
 
+            String encodedFilename = URLEncoder.encode(
+                            audioFile.getOriginalFilename(),
+                            StandardCharsets.UTF_8)
+                    .replace("+", "%20");
+
             return ResponseEntity.ok()
-                    .header("Content-Disposition", "attachment; filename=\"" + filePath.getFileName() + "\"")
+                    .contentType(MediaType.parseMediaType(audioFile.getContentType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFilename + "\"")
                     .body(resource);
 
         } catch (MalformedURLException e) {
             throw new RuntimeException("File download error: " + e.getMessage());
         }
     }
-
 
     @Override
     @Transactional

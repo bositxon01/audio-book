@@ -8,7 +8,6 @@ import uz.pdp.audiobook.payload.AudioFileDTO;
 public interface AudioFileMapper {
     AudioFileDTO toDTO(AudioFile audioFile);
 
-    @Mapping(target = "id", ignore = true)
     AudioFile toEntity(AudioFileDTO audioFileDTO);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

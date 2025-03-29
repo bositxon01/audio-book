@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class AudioFileController {
     private final AudioFileService audioFileService;
 
     @Operation(summary = "Upload a file", description = "Uploads file to audiofile")
-    @PostMapping(value = "/upload",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResult<AudioFileDTO>> uploadAudioFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam("audiobookId") Integer audiobookId) {
@@ -31,7 +30,7 @@ public class AudioFileController {
     }
 
 
-    @PutMapping(value = "/update/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResult<AudioFileDTO>> updateAudioFile(
             @PathVariable Integer id,
             @RequestParam("file") MultipartFile file) {
@@ -42,10 +41,7 @@ public class AudioFileController {
     @Operation(summary = "Download a file", description = "Download file")
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadAudioFile(@PathVariable Integer id) {
-        Resource resource = (Resource) audioFileService.downloadAudioFile(id);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+        return audioFileService.downloadAudioFile(id);
     }
 
 
