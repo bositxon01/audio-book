@@ -15,6 +15,10 @@ import uz.pdp.audiobook.entity.template.Person;
 import uz.pdp.audiobook.enums.Role;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,10 +60,17 @@ public class User extends Person implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getPermissions()
+        List<SimpleGrantedAuthority> permissionAuthorities = role.getPermissions()
                 .stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.name()))
                 .toList();
+
+        List<SimpleGrantedAuthority> roleAuthorities = Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_" + role.name())
+        );
+
+        return Stream.concat(permissionAuthorities.stream(), roleAuthorities.stream())
+                .collect(Collectors.toList());
     }
 
     @Override

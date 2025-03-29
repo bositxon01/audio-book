@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.LoginDTO;
@@ -49,6 +50,13 @@ public class AuthController {
                                                            @RequestParam String newPassword) {
         ApiResult<String> resetPassword = authService.resetPassword(email, token, newPassword);
         return ResponseEntity.ok(resetPassword);
+    }
+
+    @PutMapping("/promote-admin")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    public ResponseEntity<ApiResult<String>> promoteToAdmin(@RequestParam String username) {
+        ApiResult<String> apiResult = authService.promoteToAdmin(username);
+        return ResponseEntity.ok(apiResult);
     }
 
 }
