@@ -123,7 +123,7 @@ public class AuthServiceImpl implements AuthService {
 
         System.out.println("token: " + token);
 
-        return ApiResult.success(token);
+        return ApiResult.success("Login successful!", token);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ApiResult<String> promoteToAdmin(String username) {
         User user = userRepository.findByUsernameAndDeletedFalse(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
@@ -206,7 +206,7 @@ public class AuthServiceImpl implements AuthService {
 
         user.setRole(Role.ADMIN);
         userRepository.save(user);
-        return ApiResult.success("User" + username + " has been promoted to admin");
+        return ApiResult.success("User with email: " + username + " has been promoted to admin");
     }
 
 }

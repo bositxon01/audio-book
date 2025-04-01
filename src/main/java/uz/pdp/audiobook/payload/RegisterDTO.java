@@ -1,13 +1,14 @@
 package uz.pdp.audiobook.payload;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,8 +31,8 @@ public class RegisterDTO {
     @NotBlank(message = "Lastname cannot be blank")
     private String lastName;
 
-    @NotBlank
+    @NotNull
     @Past(message = "Date of birth must be a past date")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
 }

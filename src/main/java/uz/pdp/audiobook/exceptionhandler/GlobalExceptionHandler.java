@@ -2,6 +2,7 @@ package uz.pdp.audiobook.exceptionhandler;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -56,6 +57,17 @@ public class GlobalExceptionHandler {
 
         return ApiResult.error("Username not found", errors);
     }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ApiResult<Map<String, String>> handleBadCredentialsException(BadCredentialsException exception) {
+        Map<String, String> errors = new HashMap<>();
+
+        errors.put("credentials", exception.getMessage());
+
+        return ApiResult.error("Authentication failed", errors);
+    }
+
 
     // Handles all other runtime exceptions
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
