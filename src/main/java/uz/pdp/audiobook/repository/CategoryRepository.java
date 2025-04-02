@@ -9,5 +9,7 @@ import java.util.Set;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-    List<Category> findAllByNameIn(Set<String> names);
+
+    List<Category> findByNameIn(Set<String> categoryNames);
+
 }

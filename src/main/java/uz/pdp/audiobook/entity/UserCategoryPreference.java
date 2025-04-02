@@ -12,12 +12,6 @@ import uz.pdp.audiobook.entity.template.AbsIntegerEntity;
 @Setter
 @ToString
 @Entity
-@Table(name = "user_category_preference",
-        uniqueConstraints = @UniqueConstraint(
-                name = "unique_active_user_category",
-                columnNames = {"user_id", "category_id", "deleted"}
-        )
-)
 
 @SQLDelete(sql = "UPDATE user_category_preference SET deleted = true WHERE id = ?")
 @SQLRestriction(value = "deleted = false")
