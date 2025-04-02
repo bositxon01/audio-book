@@ -2,20 +2,21 @@ package uz.pdp.audiobook.service;
 
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.CategoryDTO;
+import uz.pdp.audiobook.payload.withoutId.CategoryDto;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    ApiResult<CategoryDTO> createCategory(CategoryDTO categoryDTO);
+    ApiResult<CategoryDTO> createCategory(CategoryDto categoryDto);
 
-    ApiResult<List<CategoryDTO>> createCategories(List<CategoryDTO> categoryDTOList);
+    ApiResult<List<CategoryDTO>> createCategories(List<CategoryDto> categoryDtoList);
 
     ApiResult<CategoryDTO> getCategory(Integer id);
 
     ApiResult<List<CategoryDTO>> getAllCategories();
 
-    ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO);
+    ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDto categoryDto);
 
     ApiResult<Object> deleteCategory(Integer id);
 

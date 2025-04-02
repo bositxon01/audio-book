@@ -3,6 +3,7 @@ package uz.pdp.audiobook.mapper;
 import org.mapstruct.*;
 import uz.pdp.audiobook.entity.Genre;
 import uz.pdp.audiobook.payload.GenreDTO;
+import uz.pdp.audiobook.payload.withoutId.GenreDto;
 
 import java.util.List;
 
@@ -14,10 +15,8 @@ public interface GenreMapper {
 
     List<GenreDTO> toDTO(List<Genre> genreList);
 
-    @Mapping(target = "id", ignore = true)
-    Genre toEntity(GenreDTO dto);
+    Genre toEntity(GenreDto genreDto);
 
-    @Mapping(target = "id", ignore = true)
-    void updateGenreFromDTO(GenreDTO dto, @MappingTarget Genre genre);
+    void updateGenreFromDTO(GenreDto genreDto, @MappingTarget Genre genre);
 
 }

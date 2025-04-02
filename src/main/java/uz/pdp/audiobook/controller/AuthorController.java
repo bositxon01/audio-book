@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.AuthorDTO;
+import uz.pdp.audiobook.payload.withoutId.AuthorDto;
 import uz.pdp.audiobook.service.AuthorService;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<AuthorDTO>> createAuthor(@Valid @RequestBody AuthorDTO authorDTO) {
-        ApiResult<AuthorDTO> apiResult = authorService.createAuthor(authorDTO);
+    public ResponseEntity<ApiResult<AuthorDTO>> createAuthor(@Valid @RequestBody AuthorDto authorDto) {
+        ApiResult<AuthorDTO> apiResult = authorService.createAuthor(authorDto);
         return ResponseEntity.ok(apiResult);
     }
 
@@ -39,8 +40,8 @@ public class AuthorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<AuthorDTO>> updateAuthor(@PathVariable Integer id,
-                                                             @Valid @RequestBody AuthorDTO authorDTO) {
-        ApiResult<AuthorDTO> apiResult = authorService.updateAuthor(id, authorDTO);
+                                                             @Valid @RequestBody AuthorDto authorDto) {
+        ApiResult<AuthorDTO> apiResult = authorService.updateAuthor(id, authorDto);
         return ResponseEntity.ok(apiResult);
     }
 

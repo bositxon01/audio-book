@@ -35,5 +35,15 @@ public class Playlist extends AbsIntegerEntity {
     @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<PlaylistAudiobooks> audiobooks;
 
+    public void addAudiobook(PlaylistAudiobooks pa) {
+        this.audiobooks.add(pa);
+        pa.setPlaylist(this);
+    }
+
+    public void removeAudiobook(PlaylistAudiobooks pa) {
+        this.audiobooks.remove(pa);
+        pa.setPlaylist(null);
+    }
+
 }
 

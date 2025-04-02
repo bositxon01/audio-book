@@ -8,6 +8,7 @@ import uz.pdp.audiobook.entity.Category;
 import uz.pdp.audiobook.mapper.CategoryMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.CategoryDTO;
+import uz.pdp.audiobook.payload.withoutId.CategoryDto;
 import uz.pdp.audiobook.repository.CategoryRepository;
 import uz.pdp.audiobook.service.CategoryService;
 
@@ -25,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<CategoryDTO> createCategory(CategoryDTO categoryDTO) {
-        Category category = categoryMapper.toEntity(categoryDTO);
+    public ApiResult<CategoryDTO> createCategory(CategoryDto categoryDto) {
+        Category category = categoryMapper.toEntity(categoryDto);
         categoryRepository.save(category);
         return ApiResult.success(categoryMapper.toDTO(category));
     }
@@ -34,11 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<List<CategoryDTO>> createCategories(List<CategoryDTO> categoryDTOList) {
+    public ApiResult<List<CategoryDTO>> createCategories(List<CategoryDto> categoryDtoList) {
         List<Category> categories = new ArrayList<>();
 
-        for (CategoryDTO categoryDTO : categoryDTOList) {
-            Category category = categoryMapper.toEntity(categoryDTO);
+        for (CategoryDto categoryDto : categoryDtoList) {
+            Category category = categoryMapper.toEntity(categoryDto);
             categoryRepository.save(category);
             categories.add(category);
         }
@@ -67,10 +68,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDTO categoryDTO) {
+    public ApiResult<CategoryDTO> updateCategory(Integer id, CategoryDto categoryDto) {
         return categoryRepository.findById(id)
                 .map(existingCategory -> {
-                    categoryMapper.updateCategoryFromDTO(categoryDTO, existingCategory);
+                    categoryMapper.updateCategoryFromDTO(categoryDto, existingCategory);
                     categoryRepository.save(existingCategory);
                     return ApiResult.success(
                             "Category updated successfully",

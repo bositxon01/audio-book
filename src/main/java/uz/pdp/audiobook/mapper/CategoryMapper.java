@@ -3,6 +3,7 @@ package uz.pdp.audiobook.mapper;
 import org.mapstruct.*;
 import uz.pdp.audiobook.entity.Category;
 import uz.pdp.audiobook.payload.CategoryDTO;
+import uz.pdp.audiobook.payload.withoutId.CategoryDto;
 
 import java.util.List;
 
@@ -14,11 +15,9 @@ public interface CategoryMapper {
 
     List<CategoryDTO> toDTO(List<Category> categoryList);
 
-    @Mapping(target = "id", ignore = true)
-    Category toEntity(CategoryDTO categoryDTO);
+    Category toEntity(CategoryDto categoryDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id", ignore = true)
-    void updateCategoryFromDTO(CategoryDTO categoryDTO, @MappingTarget Category category);
+    void updateCategoryFromDTO(CategoryDto categoryDto, @MappingTarget Category category);
 
 }

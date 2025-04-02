@@ -4,6 +4,7 @@ import org.mapstruct.*;
 import uz.pdp.audiobook.entity.Playlist;
 import uz.pdp.audiobook.entity.PlaylistAudiobooks;
 import uz.pdp.audiobook.payload.PlaylistDTO;
+import uz.pdp.audiobook.payload.withoutId.PlaylistDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,10 @@ public interface PlaylistMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "audiobooks", ignore = true)
-    Playlist toEntity(PlaylistDTO playlistDTO);
+    Playlist toEntity(PlaylistDto playlistDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "id", ignore = true)
-    void updatePlaylistFromDTO(PlaylistDTO playlistDTO, @MappingTarget Playlist playlist);
+    void updatePlaylistFromDTO(PlaylistDto playlistDto, @MappingTarget Playlist playlist);
 
     default List<Integer> mapAudiobooks(List<PlaylistAudiobooks> playlistAudiobooks) {
         if (playlistAudiobooks == null) {

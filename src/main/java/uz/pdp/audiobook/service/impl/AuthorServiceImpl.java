@@ -8,6 +8,7 @@ import uz.pdp.audiobook.entity.Author;
 import uz.pdp.audiobook.mapper.AuthorMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.AuthorDTO;
+import uz.pdp.audiobook.payload.withoutId.AuthorDto;
 import uz.pdp.audiobook.repository.AuthorRepository;
 import uz.pdp.audiobook.service.AuthorService;
 
@@ -24,7 +25,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<AuthorDTO> createAuthor(AuthorDTO authorDTO) {
+    public ApiResult<AuthorDTO> createAuthor(AuthorDto authorDTO) {
         Author author = authorMapper.toEntity(authorDTO);
         authorRepository.save(author);
         return ApiResult.success(authorMapper.toDTO(author));
@@ -51,10 +52,10 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDTO authorDTO) {
+    public ApiResult<AuthorDTO> updateAuthor(Integer id, AuthorDto authorDto) {
         return authorRepository.findById(id)
                 .map(existingAuthor -> {
-                    authorMapper.updateAuthorFromDTO(authorDTO, existingAuthor);
+                    authorMapper.updateAuthorFromDTO(authorDto, existingAuthor);
                     authorRepository.save(existingAuthor);
                     return ApiResult.success(
                             "Author updated successfully",

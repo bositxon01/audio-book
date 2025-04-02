@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.GenreDTO;
+import uz.pdp.audiobook.payload.withoutId.GenreDto;
 import uz.pdp.audiobook.service.GenreService;
 
 import java.util.List;
@@ -20,14 +21,14 @@ public class GenreController {
     private final GenreService genreService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<GenreDTO>> createGenre(@Valid @RequestBody GenreDTO genreDTO) {
-        ApiResult<GenreDTO> apiResult = genreService.createGenre(genreDTO);
+    public ResponseEntity<ApiResult<GenreDTO>> createGenre(@Valid @RequestBody GenreDto genreDto) {
+        ApiResult<GenreDTO> apiResult = genreService.createGenre(genreDto);
         return ResponseEntity.ok(apiResult);
     }
 
     @PostMapping("/list")
-    public ResponseEntity<ApiResult<List<GenreDTO>>> createGenres(@Valid @RequestBody List<GenreDTO> genreDTOList) {
-        ApiResult<List<GenreDTO>> apiResult = genreService.createGenres(genreDTOList);
+    public ResponseEntity<ApiResult<List<GenreDTO>>> createGenres(@Valid @RequestBody List<GenreDto> genreDtoList) {
+        ApiResult<List<GenreDTO>> apiResult = genreService.createGenres(genreDtoList);
         return ResponseEntity.ok(apiResult);
     }
 
@@ -45,8 +46,8 @@ public class GenreController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<GenreDTO>> updateGenre(@PathVariable Integer id,
-                                                           @Valid @RequestBody GenreDTO genreDTO) {
-        ApiResult<GenreDTO> apiResult = genreService.updateGenre(id, genreDTO);
+                                                           @Valid @RequestBody GenreDto genreDto) {
+        ApiResult<GenreDTO> apiResult = genreService.updateGenre(id, genreDto);
         return ResponseEntity.ok(apiResult);
     }
 

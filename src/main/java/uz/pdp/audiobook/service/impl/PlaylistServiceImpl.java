@@ -11,15 +11,14 @@ import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.mapper.PlaylistMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.PlaylistDTO;
+import uz.pdp.audiobook.payload.withoutId.PlaylistDto;
 import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.repository.PlaylistAudiobooksRepository;
 import uz.pdp.audiobook.repository.PlaylistRepository;
 import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.service.PlaylistService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,17 +33,17 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional
-    public ApiResult<PlaylistDTO> createPlaylist(PlaylistDTO playlistDTO) {
-        Integer userId = playlistDTO.getUserId();
+    public ApiResult<PlaylistDTO> createPlaylist(PlaylistDto playlistDto) {
+        Integer userId = playlistDto.getUserId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
 
-        Playlist playlist = playlistMapper.toEntity(playlistDTO);
+        Playlist playlist = playlistMapper.toEntity(playlistDto);
         playlist.setUser(user);
         playlistRepository.save(playlist);
 
-        List<Integer> audiobooksId = playlistDTO.getAudiobooksId();
+        List<Integer> audiobooksId = playlistDto.getAudiobooksId();
 
         List<PlaylistAudiobooks> playlistAudiobooks = new ArrayList<>();
 
@@ -84,31 +83,42 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional
-    public ApiResult<PlaylistDTO> updatePlaylist(Integer id, PlaylistDTO playlistDTO) {
+    public ApiResult<PlaylistDTO> updatePlaylist(Integer id, PlaylistDto playlistDto) {
         return playlistRepository.findById(id)
                 .map(existingPlaylist -> {
 
-                    playlistMapper.updatePlaylistFromDTO(playlistDTO, existingPlaylist);
+                    if (playlistDto.getPlaylistName() != null) {
+                        existingPlaylist.setPlaylistName(playlistDto.getPlaylistName());
+                    }
 
-                    if (playlistDTO.getAudiobooksId() != null) {
+                    List<PlaylistAudiobooks> currentAssociations = new ArrayList<>(existingPlaylist.getAudiobooks());
+                    Set<Integer> existingAudiobookIds = currentAssociations.stream()
+                            .map(pa -> pa.getAudiobook().getId())
+                            .collect(Collectors.toSet());
 
-                        List<PlaylistAudiobooks> currentAssociations = existingPlaylist.getAudiobooks();
-                        if (currentAssociations != null && !currentAssociations.isEmpty()) {
-                            playlistAudiobooksRepository.deleteAll(currentAssociations);
-                        }
+                    Set<Integer> newAudiobookIds = new HashSet<>(playlistDto.getAudiobooksId());
 
-                        List<PlaylistAudiobooks> newAssociations = playlistDTO.getAudiobooksId().stream()
-                                .map(audiobookId -> {
-                                    Audiobook audiobook = audiobookRepository.findById(audiobookId)
-                                            .orElseThrow(() -> new RuntimeException("Audiobook not found with id: " + audiobookId));
-                                    PlaylistAudiobooks pa = new PlaylistAudiobooks();
-                                    pa.setPlaylist(existingPlaylist);
-                                    pa.setAudiobook(audiobook);
+                    List<PlaylistAudiobooks> toDelete = currentAssociations.stream()
+                            .filter(pa -> !newAudiobookIds.contains(pa.getAudiobook().getId()))
+                            .toList();
 
-                                    return playlistAudiobooksRepository.save(pa);
-                                })
-                                .collect(Collectors.toList());
-                        existingPlaylist.setAudiobooks(newAssociations);
+                    Set<Integer> toAdd = newAudiobookIds.stream()
+                            .filter(idToAdd -> !existingAudiobookIds.contains(idToAdd))
+                            .collect(Collectors.toSet());
+
+                    for (PlaylistAudiobooks pa : toDelete) {
+                        existingPlaylist.removeAudiobook(pa);
+                        playlistAudiobooksRepository.delete(pa);
+                    }
+
+                    for (Integer audiobookId : toAdd) {
+                        Audiobook audiobook = audiobookRepository.findById(audiobookId)
+                                .orElseThrow(() -> new RuntimeException("Audiobook not found with id: " + audiobookId));
+
+                        PlaylistAudiobooks pa = new PlaylistAudiobooks();
+                        pa.setPlaylist(existingPlaylist);
+                        pa.setAudiobook(audiobook);
+                        existingPlaylist.addAudiobook(pa);
                     }
 
                     playlistRepository.save(existingPlaylist);
@@ -134,4 +144,5 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         return ApiResult.success("Playlist deleted successfully.");
     }
+
 }

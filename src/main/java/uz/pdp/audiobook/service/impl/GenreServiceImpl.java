@@ -8,6 +8,7 @@ import uz.pdp.audiobook.entity.Genre;
 import uz.pdp.audiobook.mapper.GenreMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.GenreDTO;
+import uz.pdp.audiobook.payload.withoutId.GenreDto;
 import uz.pdp.audiobook.repository.GenreRepository;
 import uz.pdp.audiobook.service.GenreService;
 
@@ -26,8 +27,8 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<GenreDTO> createGenre(GenreDTO genreDTO) {
-        Genre genre = genreMapper.toEntity(genreDTO);
+    public ApiResult<GenreDTO> createGenre(GenreDto genreDto) {
+        Genre genre = genreMapper.toEntity(genreDto);
         genreRepository.save(genre);
         return ApiResult.success(genreMapper.toDTO(genre));
     }
@@ -35,11 +36,11 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<List<GenreDTO>> createGenres(List<GenreDTO> genreDTOList) {
+    public ApiResult<List<GenreDTO>> createGenres(List<GenreDto> genreDtoList) {
         List<Genre> genres = new ArrayList<>();
 
-        for (GenreDTO genreDTO : genreDTOList) {
-            Genre genre = genreMapper.toEntity(genreDTO);
+        for (GenreDto genreDto : genreDtoList) {
+            Genre genre = genreMapper.toEntity(genreDto);
             genreRepository.save(genre);
             genres.add(genre);
         }
@@ -67,10 +68,10 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<GenreDTO> updateGenre(Integer id, GenreDTO genreDTO) {
+    public ApiResult<GenreDTO> updateGenre(Integer id, GenreDto genreDto) {
         return genreRepository.findById(id)
                 .map(existingGenre -> {
-                    genreMapper.updateGenreFromDTO(genreDTO, existingGenre);
+                    genreMapper.updateGenreFromDTO(genreDto, existingGenre);
                     genreRepository.save(existingGenre);
                     return ApiResult.success(
                             "Genre updated successfully",

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.CategoryDTO;
+import uz.pdp.audiobook.payload.withoutId.CategoryDto;
 import uz.pdp.audiobook.service.CategoryService;
 
 import java.util.List;
@@ -20,14 +21,14 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<CategoryDTO>> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
-        ApiResult<CategoryDTO> apiResult = categoryService.createCategory(categoryDTO);
+    public ResponseEntity<ApiResult<CategoryDTO>> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
+        ApiResult<CategoryDTO> apiResult = categoryService.createCategory(categoryDto);
         return ResponseEntity.ok(apiResult);
     }
 
     @PostMapping("/list")
-    public ResponseEntity<ApiResult<List<CategoryDTO>>> createCategories(@Valid @RequestBody List<CategoryDTO> categoryDTOList) {
-        ApiResult<List<CategoryDTO>> apiResult = categoryService.createCategories(categoryDTOList);
+    public ResponseEntity<ApiResult<List<CategoryDTO>>> createCategories(@Valid @RequestBody List<CategoryDto> categoryDtoList) {
+        ApiResult<List<CategoryDTO>> apiResult = categoryService.createCategories(categoryDtoList);
         return ResponseEntity.ok(apiResult);
     }
 
@@ -45,8 +46,8 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<CategoryDTO>> updateCategory(@PathVariable Integer id,
-                                                                 @Valid @RequestBody CategoryDTO categoryDTO) {
-        ApiResult<CategoryDTO> apiResult = categoryService.updateCategory(id, categoryDTO);
+                                                                 @Valid @RequestBody CategoryDto categoryDto) {
+        ApiResult<CategoryDTO> apiResult = categoryService.updateCategory(id, categoryDto);
         return ResponseEntity.ok(apiResult);
     }
 

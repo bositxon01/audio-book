@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.PlaylistDTO;
+import uz.pdp.audiobook.payload.withoutId.PlaylistDto;
 import uz.pdp.audiobook.service.PlaylistService;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<PlaylistDTO>> createPlaylist(@Valid @RequestBody PlaylistDTO playlistDTO) {
-        ApiResult<PlaylistDTO> apiResult = playlistService.createPlaylist(playlistDTO);
+    public ResponseEntity<ApiResult<PlaylistDTO>> createPlaylist(@Valid @RequestBody PlaylistDto playlistDto) {
+        ApiResult<PlaylistDTO> apiResult = playlistService.createPlaylist(playlistDto);
         return ResponseEntity.ok(apiResult);
     }
 
@@ -39,8 +40,8 @@ public class PlaylistController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<PlaylistDTO>> updatePlaylist(@PathVariable Integer id,
-                                                                 @Valid @RequestBody PlaylistDTO playlistDTO) {
-        ApiResult<PlaylistDTO> apiResult = playlistService.updatePlaylist(id, playlistDTO);
+                                                                 @Valid @RequestBody PlaylistDto playlistDto) {
+        ApiResult<PlaylistDTO> apiResult = playlistService.updatePlaylist(id, playlistDto);
         return ResponseEntity.ok(apiResult);
     }
 
