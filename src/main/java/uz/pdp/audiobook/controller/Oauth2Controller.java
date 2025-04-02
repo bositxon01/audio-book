@@ -1,5 +1,6 @@
 package uz.pdp.audiobook.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import uz.pdp.audiobook.service.Oauth2Service;
 @RequestMapping("/")
 @RequiredArgsConstructor
 @Tag(name = "Oauth2 API", description = "This API can be used for Oauth2 authorization")
+@Hidden
 public class Oauth2Controller {
 
     private final Oauth2Service oauth2Service;

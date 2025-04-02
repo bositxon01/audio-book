@@ -12,11 +12,11 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserPreferencesDTO {
+public class UserPreferencesGetDTO {
 
     @Size(min = 3, message = "You must choose at least three categories")
     private Set<Integer> categoryIds;
 
-    private Set<String> preferredCategories;
+    private Set<CategoryDTO> preferredCategories;
 
 }

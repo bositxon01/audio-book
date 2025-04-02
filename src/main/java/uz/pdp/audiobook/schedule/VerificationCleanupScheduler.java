@@ -14,7 +14,7 @@ public class VerificationCleanupScheduler {
 
     private final Map<String, VerificationInfo> verificationData;
 
-    @Scheduled(fixedRate = 2, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(fixedRate = 5, timeUnit = TimeUnit.MINUTES)
     public void cleanUpExpiredVerifications() {
         long now = System.currentTimeMillis();
 

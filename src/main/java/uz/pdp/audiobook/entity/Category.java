@@ -31,4 +31,16 @@ public class Category extends AbsIntegerEntity {
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
     private List<Audiobook> audiobooks;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category that)) return false;
+        return getId() != null && getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

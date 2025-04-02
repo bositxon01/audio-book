@@ -28,7 +28,7 @@ public class Oauth2ServiceImpl implements Oauth2Service {
 
         String jwtToken = jwtProvider.generateToken(user);
 
-        return ApiResult.success(jwtToken);
+        return ApiResult.success("Successfully logged in through Oauth2!", jwtToken);
     }
 
 }

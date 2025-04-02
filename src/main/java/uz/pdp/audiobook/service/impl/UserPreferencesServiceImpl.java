@@ -6,14 +6,16 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.pdp.audiobook.entity.Category;
 import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.entity.UserCategoryPreference;
+import uz.pdp.audiobook.payload.CategoryDTO;
 import uz.pdp.audiobook.payload.UserPreferencesDTO;
+import uz.pdp.audiobook.payload.UserPreferencesGetDTO;
 import uz.pdp.audiobook.repository.CategoryRepository;
 import uz.pdp.audiobook.repository.UserCategoryPreferenceRepository;
 import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.service.UserPreferencesService;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,18 +28,18 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
     private final UserCategoryPreferenceRepository userCategoryPreferenceRepository;
 
     @Override
-    public UserPreferencesDTO getUserPreferences(Integer userId) {
+    public UserPreferencesGetDTO getUserPreferences(Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         var preferences = userCategoryPreferenceRepository.findAllByUser(user);
 
-        Set<Integer> categoryIds = preferences.stream()
-                .map(pref -> pref.getCategory().getId())
-                .collect(Collectors.toSet());
+        Set<CategoryDTO> categoryDTOS = preferences.stream()
+                .map(pref -> new CategoryDTO(pref.getCategory().getId(), pref.getCategory().getName()))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        var userPreferencesDTO = new UserPreferencesDTO();
-        userPreferencesDTO.setCategoryIds(categoryIds);
+        var userPreferencesDTO = new UserPreferencesGetDTO();
+        userPreferencesDTO.setPreferredCategories(categoryDTOS);
 
         return userPreferencesDTO;
     }
@@ -50,10 +52,19 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         userCategoryPreferenceRepository.deleteAllByUser(user);
+        userCategoryPreferenceRepository.flush();
 
-        List<Category> categoryRepositoryAllById = categoryRepository.findAllById(preferencesDTO.getCategoryIds());
+        Set<Category> categories = new LinkedHashSet<>();
 
-        Set<Category> categories = new HashSet<>(categoryRepositoryAllById);
+        Set<Integer> categoryIds = preferencesDTO.getCategoryIds();
+
+        if (Objects.nonNull(categoryIds) && !categoryIds.isEmpty())
+            categories.addAll(categoryRepository.findAllById(categoryIds));
+
+        Set<String> preferredCategories = preferencesDTO.getPreferredCategories();
+
+        if (Objects.nonNull(preferredCategories) && !preferredCategories.isEmpty())
+            categories.addAll(categoryRepository.findAllByNameIn(preferredCategories));
 
         if (categories.size() < 3)
             throw new RuntimeException("You must choose at least three valid categories");
@@ -83,4 +94,5 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 
         userRepository.save(user);
     }
+
 }

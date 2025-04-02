@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
 
 
     // Handles all other runtime exceptions
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
     public ApiResult<String> handleRuntimeExceptions(RuntimeException exception) {
         return ApiResult.error("Something went wrong: " + exception.getMessage());
