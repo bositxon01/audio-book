@@ -45,4 +45,5 @@ public class UserPreferenceController {
         userPreferencesService.skipUserPreferences(user.getId());
         return ResponseEntity.ok("User preferences skipped successfully.");
     }
+
 }

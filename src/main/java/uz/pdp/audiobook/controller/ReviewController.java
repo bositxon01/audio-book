@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.ReviewDTO;
+import uz.pdp.audiobook.payload.withoutId.ReviewDto;
 import uz.pdp.audiobook.service.ReviewService;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<ApiResult<ReviewDTO>> createReview(@Valid @RequestBody ReviewDTO reviewDTO) {
-        ApiResult<ReviewDTO> apiResult = reviewService.createReview(reviewDTO);
+    public ResponseEntity<ApiResult<ReviewDTO>> createReview(@Valid @RequestBody ReviewDto reviewDto) {
+        ApiResult<ReviewDTO> apiResult = reviewService.createReview(reviewDto);
         return ResponseEntity.ok(apiResult);
     }
 
@@ -45,8 +46,8 @@ public class ReviewController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<ReviewDTO>> updateReview(@PathVariable Integer id,
-                                                             @Valid @RequestBody ReviewDTO reviewDTO) {
-        ApiResult<ReviewDTO> apiResult = reviewService.updateReview(id, reviewDTO);
+                                                             @Valid @RequestBody ReviewDto reviewDto) {
+        ApiResult<ReviewDTO> apiResult = reviewService.updateReview(id, reviewDto);
         return ResponseEntity.ok(apiResult);
     }
 

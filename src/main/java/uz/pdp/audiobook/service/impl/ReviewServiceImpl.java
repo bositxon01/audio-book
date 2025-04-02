@@ -10,6 +10,7 @@ import uz.pdp.audiobook.entity.User;
 import uz.pdp.audiobook.mapper.ReviewMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.ReviewDTO;
+import uz.pdp.audiobook.payload.withoutId.ReviewDto;
 import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.repository.ReviewRepository;
 import uz.pdp.audiobook.repository.UserRepository;
@@ -30,17 +31,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ApiResult<ReviewDTO> createReview(ReviewDTO reviewDTO) {
-        Review review = reviewMapper.toEntity(reviewDTO);
+    public ApiResult<ReviewDTO> createReview(ReviewDto reviewDto) {
+        Review review = reviewMapper.toEntity(reviewDto);
 
-        Integer userId = reviewDTO.getUserId();
+        Integer userId = reviewDto.getUserId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
 
         review.setUser(user);
 
-        Integer audioBookId = reviewDTO.getAudioBookId();
+        Integer audioBookId = reviewDto.getAudioBookId();
 
         Audiobook audiobook = audiobookRepository.findById(audioBookId)
                 .orElseThrow(() -> new RuntimeException("AudioBook not found with id: " + audioBookId));
@@ -70,10 +71,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ApiResult<ReviewDTO> updateReview(Integer id, ReviewDTO reviewDTO) {
+    public ApiResult<ReviewDTO> updateReview(Integer id, ReviewDto reviewDto) {
         return reviewRepository.findById(id)
                 .map(existingReview -> {
-                    reviewMapper.updateReviewFromDTO(reviewDTO, existingReview);
+                    reviewMapper.updateReviewFromDTO(reviewDto, existingReview);
                     reviewRepository.save(existingReview);
                     return ApiResult.success(
                             "Review updated successfully",
@@ -111,7 +112,9 @@ public class ReviewServiceImpl implements ReviewService {
                 .average()
                 .orElse(0.0);
 
-        return ApiResult.success(averageRating);
+        double roundedAverage = Math.round(averageRating * 10.0) / 10.0;
+
+        return ApiResult.success(roundedAverage);
     }
 
 }

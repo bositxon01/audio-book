@@ -10,6 +10,7 @@ import uz.pdp.audiobook.entity.UserProgress;
 import uz.pdp.audiobook.mapper.UserProgressMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.UserProgressDTO;
+import uz.pdp.audiobook.payload.withoutId.UserProgressDto;
 import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.repository.UserProgressRepository;
 import uz.pdp.audiobook.repository.UserRepository;
@@ -47,7 +48,7 @@ public class UserProgressServiceImpl implements UserProgressService {
 
     @Override
     @Transactional
-    public ApiResult<UserProgressDTO> createUserProgress(UserProgressDTO userProgressDTO) {
+    public ApiResult<UserProgressDTO> createUserProgress(UserProgressDto userProgressDTO) {
         UserProgress userProgress = userProgressMapper.toEntity(userProgressDTO);
 
         Integer userId = userProgressDTO.getUserId();
@@ -70,18 +71,18 @@ public class UserProgressServiceImpl implements UserProgressService {
     }
 
     @Override
-    public ApiResult<UserProgressDTO> updateUserProgress(Integer id, UserProgressDTO userProgressDTO) {
+    public ApiResult<UserProgressDTO> updateUserProgress(Integer id, UserProgressDto userProgressDto) {
         return userProgressRepository.findById(id)
                 .map(existingUserProgress -> {
-                    userProgressMapper.updateUserProgressFromDTO(userProgressDTO, existingUserProgress);
+                    userProgressMapper.updateUserProgressFromDTO(userProgressDto, existingUserProgress);
 
-                    Integer userId = userProgressDTO.getUserId();
+                    Integer userId = userProgressDto.getUserId();
                     User user = userRepository.findById(userId)
                             .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
 
                     existingUserProgress.setUser(user);
 
-                    Integer audiobookId = userProgressDTO.getAudiobookId();
+                    Integer audiobookId = userProgressDto.getAudiobookId();
 
                     Audiobook audiobook = audiobookRepository.findById(audiobookId)
                             .orElseThrow(() -> new RuntimeException("Audiobook not found with id: " + audiobookId));
@@ -110,4 +111,5 @@ public class UserProgressServiceImpl implements UserProgressService {
 
         return ApiResult.success("User progress deleted successfully");
     }
+
 }

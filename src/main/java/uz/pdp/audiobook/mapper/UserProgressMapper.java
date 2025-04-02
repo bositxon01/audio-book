@@ -3,6 +3,7 @@ package uz.pdp.audiobook.mapper;
 import org.mapstruct.*;
 import uz.pdp.audiobook.entity.UserProgress;
 import uz.pdp.audiobook.payload.UserProgressDTO;
+import uz.pdp.audiobook.payload.withoutId.UserProgressDto;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING)
@@ -14,10 +15,8 @@ public interface UserProgressMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "audiobook", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    UserProgress toEntity(UserProgressDTO userProgressDTO);
+    UserProgress toEntity(UserProgressDto userProgressDto);
 
-    @Mapping(target = "id", ignore = true)
-    void updateUserProgressFromDTO(UserProgressDTO userProgressDTO, @MappingTarget UserProgress userProgress);
+    void updateUserProgressFromDTO(UserProgressDto userProgressDto, @MappingTarget UserProgress userProgress);
 
 }

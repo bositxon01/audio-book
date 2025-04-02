@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.UserProgressDTO;
+import uz.pdp.audiobook.payload.withoutId.UserProgressDto;
 import uz.pdp.audiobook.service.UserProgressService;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/progress")
 @Tag(name = "User progress API", description = "CRUD API for tracking user progress in audiobooks")
 public class UserProgressController {
+
     private final UserProgressService userProgressService;
 
     @GetMapping("/{id}")
@@ -31,14 +33,15 @@ public class UserProgressController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResult<UserProgressDTO>> createUserProgress(@Valid @RequestBody UserProgressDTO userProgressDTO) {
-        ApiResult<UserProgressDTO> result = userProgressService.createUserProgress(userProgressDTO);
+    public ResponseEntity<ApiResult<UserProgressDTO>> createUserProgress(@Valid @RequestBody UserProgressDto userProgressDto) {
+        ApiResult<UserProgressDTO> result = userProgressService.createUserProgress(userProgressDto);
         return ResponseEntity.ok(result);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResult<UserProgressDTO>> updateUserProgress(@PathVariable Integer id, @Valid @RequestBody UserProgressDTO userProgressDTO) {
-        ApiResult<UserProgressDTO> result = userProgressService.updateUserProgress(id, userProgressDTO);
+    public ResponseEntity<ApiResult<UserProgressDTO>> updateUserProgress(@PathVariable Integer id,
+                                                                         @Valid @RequestBody UserProgressDto userProgressDto) {
+        ApiResult<UserProgressDTO> result = userProgressService.updateUserProgress(id, userProgressDto);
         return ResponseEntity.ok(result);
     }
 

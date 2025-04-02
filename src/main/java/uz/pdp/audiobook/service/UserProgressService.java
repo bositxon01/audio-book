@@ -1,8 +1,8 @@
 package uz.pdp.audiobook.service;
 
-import jakarta.validation.Valid;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.UserProgressDTO;
+import uz.pdp.audiobook.payload.withoutId.UserProgressDto;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public interface UserProgressService {
 
     ApiResult<List<UserProgressDTO>> getAllUserProgress();
 
-    ApiResult<UserProgressDTO> createUserProgress(@Valid UserProgressDTO userProgressDTO);
+    ApiResult<UserProgressDTO> createUserProgress(UserProgressDto userProgressDto);
 
-    ApiResult<UserProgressDTO> updateUserProgress(Integer id, @Valid UserProgressDTO userProgressDTO);
+    ApiResult<UserProgressDTO> updateUserProgress(Integer id, UserProgressDto userProgressDto);
 
     ApiResult<Object> deleteUserProgress(Integer id);
 
