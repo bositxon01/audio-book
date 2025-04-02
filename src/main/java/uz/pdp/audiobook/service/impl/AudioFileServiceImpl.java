@@ -48,7 +48,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudioFileDTO> uploadAudioFile(MultipartFile file, Integer audiobookId) {
         if (file.isEmpty()) {
             return ApiResult.error("File is empty");
@@ -83,7 +83,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudioFileDTO> updateAudioFile(Integer id, MultipartFile file) {
         Optional<AudioFile> optionalAudioFile = audioFileRepository.findById(id);
         if (optionalAudioFile.isEmpty()) {
@@ -147,7 +147,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<Object> deleteAudioFile(Integer id) {
         Optional<AudioFile> optionalAudioFile = audioFileRepository.findById(id);
         if (optionalAudioFile.isEmpty())

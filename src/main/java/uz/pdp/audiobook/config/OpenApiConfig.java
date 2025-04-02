@@ -3,8 +3,6 @@ package uz.pdp.audiobook.config;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.OAuthFlow;
-import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
@@ -23,16 +21,16 @@ import org.springframework.context.annotation.Configuration;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
-@SecurityScheme(
-        name = "oauth2",
-        type = SecuritySchemeType.OAUTH2,
-        flows = @OAuthFlows(
-                authorizationCode = @OAuthFlow(
-                        authorizationUrl = "http://localhost:8080/oauth2/authorization/google",
-                        tokenUrl = "http://localhost:8080/login/oauth2/code/google"
-                )
-        )
-)
+//@SecurityScheme(
+//        name = "oauth2",
+//        type = SecuritySchemeType.OAUTH2,
+//        flows = @OAuthFlows(
+//                authorizationCode = @OAuthFlow(
+//                        authorizationUrl = "http://localhost:8080/oauth2/authorization/google",
+//                        tokenUrl = "http://localhost:8080/login/oauth2/code/google"
+//                )
+//        )
+//)
 public class OpenApiConfig {
 
 }

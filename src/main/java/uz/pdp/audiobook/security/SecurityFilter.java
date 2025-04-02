@@ -46,7 +46,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (authorization != null && authorization.startsWith(BEARER_PREFIX)) {
+        if (Objects.nonNull(authorization) && authorization.startsWith(BEARER_PREFIX)) {
 
             String token = authorization.substring(7);
 

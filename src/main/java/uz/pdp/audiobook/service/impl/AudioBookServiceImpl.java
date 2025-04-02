@@ -11,12 +11,14 @@ import uz.pdp.audiobook.mapper.AudiobookMapper;
 import uz.pdp.audiobook.mapper.AuthorMapper;
 import uz.pdp.audiobook.mapper.GenreMapper;
 import uz.pdp.audiobook.payload.*;
+import uz.pdp.audiobook.payload.withoutId.AudiobookDto;
 import uz.pdp.audiobook.repository.AudioBookAuthorsRepository;
 import uz.pdp.audiobook.repository.AudioBookGenresRepository;
 import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.service.AudioBookService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -63,13 +65,13 @@ public class AudioBookServiceImpl implements AudioBookService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<AudiobookDTO> createAudioBook(AudiobookDTO audiobookDTO) {
+    public ApiResult<AudiobookDTO> createAudioBook(AudiobookDto audiobookDto) {
 
-        Audiobook audiobook = audiobookMapper.toEntity(audiobookDTO, entityManager);
+        Audiobook audiobook = audiobookMapper.toEntity(audiobookDto, entityManager);
         audiobookRepository.save(audiobook);
 
-        if (audiobookDTO.getAuthorIds() != null) {
-            for (Integer authorId : audiobookDTO.getAuthorIds()) {
+        if (audiobookDto.getAuthorIds() != null) {
+            for (Integer authorId : audiobookDto.getAuthorIds()) {
                 Author author = entityManager.getReference(Author.class, authorId);
                 AudioBookAuthors audioBookAuthors = new AudioBookAuthors();
                 audioBookAuthors.setAuthor(author);
@@ -78,8 +80,8 @@ public class AudioBookServiceImpl implements AudioBookService {
             }
         }
 
-        if (audiobookDTO.getGenreIds() != null) {
-            for (Integer genreId : audiobookDTO.getGenreIds()) {
+        if (audiobookDto.getGenreIds() != null) {
+            for (Integer genreId : audiobookDto.getGenreIds()) {
                 Genre genre = entityManager.getReference(Genre.class, genreId);
                 AudioBookGenres audioBookGenres = new AudioBookGenres();
                 audioBookGenres.setGenre(genre);
@@ -97,10 +99,10 @@ public class AudioBookServiceImpl implements AudioBookService {
     @Override
     @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ApiResult<AudiobookDTO> updateAudioBook(Integer id, AudiobookDTO audiobookDTO) {
+    public ApiResult<AudiobookDTO> updateAudioBook(Integer id, AudiobookDto audiobookDto) {
         return audiobookRepository.findById(id)
                 .map(existingAudiobook -> {
-                    audiobookMapper.updateAudiobookFromDTO(audiobookDTO, existingAudiobook);
+                    audiobookMapper.updateAudiobookFromDTO(audiobookDto, existingAudiobook);
                     audiobookRepository.save(existingAudiobook);
                     AudiobookDTO updatedDto = audiobookMapper.toDTO(existingAudiobook);
                     populateAssociations(existingAudiobook, updatedDto);
@@ -168,7 +170,7 @@ public class AudioBookServiceImpl implements AudioBookService {
 
         AudioFile audioFile = audiobook.getAudioFile();
 
-        if (audioFile == null)
+        if (Objects.isNull(audioFile))
             throw new RuntimeException("Audio file not found with id: " + id + " for audiobook: " + audiobook.getId());
 
         AudioFileDTO audioFileDTO = audioFileMapper.toDTO(audioFile);
