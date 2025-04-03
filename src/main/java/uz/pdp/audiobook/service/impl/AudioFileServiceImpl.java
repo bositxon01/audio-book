@@ -66,8 +66,10 @@ public class AudioFileServiceImpl implements AudioFileService {
             Files.createDirectories(filePath.getParent());
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
+            Audiobook audiobook = optionalAudiobook.get();
+
             AudioFile audioFile = AudioFile.builder()
-                    .audiobook(optionalAudiobook.get())
+                    .audiobook(audiobook)
                     .contentType(file.getContentType())
                     .originalFilename(file.getOriginalFilename())
                     .durationSeconds(getAudioDuration(file))
@@ -75,6 +77,9 @@ public class AudioFileServiceImpl implements AudioFileService {
                     .build();
 
             audioFileRepository.save(audioFile);
+
+            audiobook.setAudioFile(audioFile);
+            audiobookRepository.save(audiobook);
             return ApiResult.success(audioFileMapper.toDTO(audioFile));
         } catch (IOException e) {
             return ApiResult.error("File upload failed: " + e.getMessage());
