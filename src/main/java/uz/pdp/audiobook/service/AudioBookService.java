@@ -1,6 +1,7 @@
 package uz.pdp.audiobook.service;
 
 import uz.pdp.audiobook.payload.*;
+import uz.pdp.audiobook.payload.withoutId.AudiobookDto;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ public interface AudioBookService {
 
     ApiResult<List<AudiobookDTO>> getAudioBooks();
 
-    ApiResult<AudiobookDTO> createAudioBook(AudiobookDTO audiobookDTO);
+    ApiResult<AudiobookDTO> createAudioBook(AudiobookDto audiobookDto);
 
-    ApiResult<AudiobookDTO> updateAudioBook(Integer id, AudiobookDTO audiobookDTO);
+    ApiResult<AudiobookDTO> updateAudioBook(Integer id, AudiobookDto audiobookDto);
 
     ApiResult<Object> deleteAudioBook(Integer id);
 

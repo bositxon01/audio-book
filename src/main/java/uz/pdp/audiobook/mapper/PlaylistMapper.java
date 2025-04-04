@@ -8,6 +8,7 @@ import uz.pdp.audiobook.payload.withoutId.PlaylistDto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING)
@@ -21,11 +22,8 @@ public interface PlaylistMapper {
     @Mapping(target = "audiobooks", ignore = true)
     Playlist toEntity(PlaylistDto playlistDto);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updatePlaylistFromDTO(PlaylistDto playlistDto, @MappingTarget Playlist playlist);
-
     default List<Integer> mapAudiobooks(List<PlaylistAudiobooks> playlistAudiobooks) {
-        if (playlistAudiobooks == null) {
+        if (Objects.isNull(playlistAudiobooks)) {
             return new ArrayList<>();
         }
 

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.audiobook.payload.*;
+import uz.pdp.audiobook.payload.withoutId.AudiobookDto;
 import uz.pdp.audiobook.service.AudioBookService;
 
 import java.util.List;
@@ -49,15 +50,15 @@ public class AudioBookController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResult<AudiobookDTO>> createAudioBook(@Valid @RequestBody AudiobookDTO audiobookDTO) {
-        ApiResult<AudiobookDTO> apiResult = audioBookService.createAudioBook(audiobookDTO);
+    public ResponseEntity<ApiResult<AudiobookDTO>> createAudioBook(@Valid @RequestBody AudiobookDto audiobookDto) {
+        ApiResult<AudiobookDTO> apiResult = audioBookService.createAudioBook(audiobookDto);
         return ResponseEntity.ok(apiResult);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResult<AudiobookDTO>> updateAudioBook(@PathVariable Integer id,
-                                                                   @Valid @RequestBody AudiobookDTO audiobookDTO) {
-        ApiResult<AudiobookDTO> apiResult = audioBookService.updateAudioBook(id, audiobookDTO);
+                                                                   @Valid @RequestBody AudiobookDto audiobookDto) {
+        ApiResult<AudiobookDTO> apiResult = audioBookService.updateAudioBook(id, audiobookDto);
         return ResponseEntity.ok(apiResult);
     }
 

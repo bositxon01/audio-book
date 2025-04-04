@@ -48,7 +48,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudioFileDTO> uploadAudioFile(MultipartFile file, Integer audiobookId) {
         if (file.isEmpty()) {
             return ApiResult.error("File is empty");
@@ -66,8 +66,10 @@ public class AudioFileServiceImpl implements AudioFileService {
             Files.createDirectories(filePath.getParent());
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
+            Audiobook audiobook = optionalAudiobook.get();
+
             AudioFile audioFile = AudioFile.builder()
-                    .audiobook(optionalAudiobook.get())
+                    .audiobook(audiobook)
                     .contentType(file.getContentType())
                     .originalFilename(file.getOriginalFilename())
                     .durationSeconds(getAudioDuration(file))
@@ -75,6 +77,9 @@ public class AudioFileServiceImpl implements AudioFileService {
                     .build();
 
             audioFileRepository.save(audioFile);
+
+            audiobook.setAudioFile(audioFile);
+            audiobookRepository.save(audiobook);
             return ApiResult.success(audioFileMapper.toDTO(audioFile));
         } catch (IOException e) {
             return ApiResult.error("File upload failed: " + e.getMessage());
@@ -83,7 +88,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<AudioFileDTO> updateAudioFile(Integer id, MultipartFile file) {
         Optional<AudioFile> optionalAudioFile = audioFileRepository.findById(id);
         if (optionalAudioFile.isEmpty()) {
@@ -147,7 +152,7 @@ public class AudioFileServiceImpl implements AudioFileService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ApiResult<Object> deleteAudioFile(Integer id) {
         Optional<AudioFile> optionalAudioFile = audioFileRepository.findById(id);
         if (optionalAudioFile.isEmpty())
