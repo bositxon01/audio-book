@@ -9,5 +9,4 @@ public interface SearchService {
 
     ApiResult<List<AudiobookDTO>> search(String query);
 
-
 }

@@ -20,6 +20,10 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public ApiResult<List<AudiobookDTO>> search(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return ApiResult.success(List.of()); // yoki mos xato xabar
+        }
+
         List<Audiobook> audiobooks = searchRepository
                 .searchByTitleOrDescriptionOrAuthorName(query.toLowerCase());
 

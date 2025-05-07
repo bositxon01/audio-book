@@ -21,9 +21,13 @@ public class SearchController {
 
     private final SearchService searchService;
 
-    @GetMapping("/search")
-    public ResponseEntity<ApiResult<List<AudiobookDTO>>> search(@RequestParam String query) {
+    @GetMapping
+    public ResponseEntity<ApiResult<List<AudiobookDTO>>> search(@RequestParam(required = false) String query) {
+        // query bo'sh yoki null bo'lsa, xatolik qaytarish
+        if (query == null || query.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body(ApiResult.error("Query parameter cannot be empty or null"));
+        }
+
         return ResponseEntity.ok(searchService.search(query));
     }
-
 }

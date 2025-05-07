@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface SearchRepository extends JpaRepository<Audiobook, Integer> {
 
-
     @Query("""
                 SELECT DISTINCT a FROM Audiobook a
                 LEFT JOIN AudioBookAuthors aba ON a.id = aba.audiobook.id
@@ -17,9 +16,8 @@ public interface SearchRepository extends JpaRepository<Audiobook, Integer> {
                 WHERE LOWER(a.title) LIKE %:query%
                    OR LOWER(a.description) LIKE %:query%
                    OR LOWER(au.firstName) LIKE %:query%
-                   OR lower(au.lastName) like %:query%
+                   OR LOWER(au.lastName) LIKE %:query%
+                   OR LOWER(CONCAT(au.firstName, ' ', au.lastName)) LIKE %:query%
             """)
     List<Audiobook> searchByTitleOrDescriptionOrAuthorName(@Param("query") String query);
-
-
 }
