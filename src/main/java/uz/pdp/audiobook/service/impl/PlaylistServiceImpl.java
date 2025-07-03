@@ -12,7 +12,7 @@ import uz.pdp.audiobook.mapper.PlaylistMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.PlaylistDTO;
 import uz.pdp.audiobook.payload.withoutId.PlaylistDto;
-import uz.pdp.audiobook.repository.AudiobookRepository;
+import uz.pdp.audiobook.repository.AudioBookRepository;
 import uz.pdp.audiobook.repository.PlaylistAudiobooksRepository;
 import uz.pdp.audiobook.repository.PlaylistRepository;
 import uz.pdp.audiobook.repository.UserRepository;
@@ -28,7 +28,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final PlaylistMapper playlistMapper;
     private final UserRepository userRepository;
-    private final AudiobookRepository audiobookRepository;
+    private final AudioBookRepository audiobookRepository;
     private final PlaylistAudiobooksRepository playlistAudiobooksRepository;
 
     @Override

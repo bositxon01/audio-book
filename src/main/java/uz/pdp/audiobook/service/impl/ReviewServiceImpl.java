@@ -11,7 +11,7 @@ import uz.pdp.audiobook.mapper.ReviewMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.ReviewDTO;
 import uz.pdp.audiobook.payload.withoutId.ReviewDto;
-import uz.pdp.audiobook.repository.AudiobookRepository;
+import uz.pdp.audiobook.repository.AudioBookRepository;
 import uz.pdp.audiobook.repository.ReviewRepository;
 import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.service.ReviewService;
@@ -27,7 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
     private final UserRepository userRepository;
-    private final AudiobookRepository audiobookRepository;
+    private final AudioBookRepository audioBookRepository;
 
     @Override
     @Transactional
@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Integer audioBookId = reviewDto.getAudioBookId();
 
-        Audiobook audiobook = audiobookRepository.findById(audioBookId)
+        Audiobook audiobook = audioBookRepository.findById(audioBookId)
                 .orElseThrow(() -> new RuntimeException("AudioBook not found with id: " + audioBookId));
 
         review.setAudiobook(audiobook);

@@ -11,7 +11,7 @@ import uz.pdp.audiobook.mapper.UserProgressMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.UserProgressDTO;
 import uz.pdp.audiobook.payload.withoutId.UserProgressDto;
-import uz.pdp.audiobook.repository.AudiobookRepository;
+import uz.pdp.audiobook.repository.AudioBookRepository;
 import uz.pdp.audiobook.repository.UserProgressRepository;
 import uz.pdp.audiobook.repository.UserRepository;
 import uz.pdp.audiobook.service.UserProgressService;
@@ -26,7 +26,7 @@ public class UserProgressServiceImpl implements UserProgressService {
     private final UserProgressRepository userProgressRepository;
     private final UserProgressMapper userProgressMapper;
     private final UserRepository userRepository;
-    private final AudiobookRepository audiobookRepository;
+    private final AudioBookRepository audiobookRepository;
 
     @Override
     public ApiResult<UserProgressDTO> getUserProgress(Integer id) {

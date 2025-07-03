@@ -14,7 +14,7 @@ import uz.pdp.audiobook.payload.*;
 import uz.pdp.audiobook.payload.withoutId.AudiobookDto;
 import uz.pdp.audiobook.repository.AudioBookAuthorsRepository;
 import uz.pdp.audiobook.repository.AudioBookGenresRepository;
-import uz.pdp.audiobook.repository.AudiobookRepository;
+import uz.pdp.audiobook.repository.AudioBookRepository;
 import uz.pdp.audiobook.service.AudioBookService;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AudioBookServiceImpl implements AudioBookService {
 
-    private final AudiobookRepository audiobookRepository;
+    private final AudioBookRepository audiobookRepository;
     private final AudiobookMapper audiobookMapper;
     private final AudioFileMapper audioFileMapper;
     private final AudioBookAuthorsRepository audioBookAuthorsRepository;
