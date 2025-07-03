@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import uz.pdp.audiobook.entity.Audiobook;
 
 @Repository
-public interface AudiobookRepository extends JpaRepository<Audiobook, Integer> {
+public interface AudioBookRepository extends JpaRepository<Audiobook, Integer> {
 }

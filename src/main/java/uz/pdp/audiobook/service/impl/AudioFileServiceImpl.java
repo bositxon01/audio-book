@@ -20,8 +20,8 @@ import uz.pdp.audiobook.entity.Audiobook;
 import uz.pdp.audiobook.mapper.AudioFileMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.AudioFileDTO;
+import uz.pdp.audiobook.repository.AudioBookRepository;
 import uz.pdp.audiobook.repository.AudioFileRepository;
-import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.service.AudioFileService;
 
 import java.io.IOException;
@@ -41,7 +41,7 @@ import java.util.UUID;
 public class AudioFileServiceImpl implements AudioFileService {
 
     private final AudioFileRepository audioFileRepository;
-    private final AudiobookRepository audiobookRepository;
+    private final AudioBookRepository audioBookRepository;
     private final AudioFileMapper audioFileMapper;
 
     private static final String AUDIO_FILE_DIRECTORY = "file/uploads/audio/";
@@ -54,7 +54,7 @@ public class AudioFileServiceImpl implements AudioFileService {
             return ApiResult.error("File is empty");
         }
 
-        Optional<Audiobook> optionalAudiobook = audiobookRepository.findById(audiobookId);
+        Optional<Audiobook> optionalAudiobook = audioBookRepository.findById(audiobookId);
         if (optionalAudiobook.isEmpty()) {
             return ApiResult.error("Audiobook not found with id: " + audiobookId);
         }
@@ -79,7 +79,7 @@ public class AudioFileServiceImpl implements AudioFileService {
             audioFileRepository.save(audioFile);
 
             audiobook.setAudioFile(audioFile);
-            audiobookRepository.save(audiobook);
+            audioBookRepository.save(audiobook);
             return ApiResult.success(audioFileMapper.toDTO(audioFile));
         } catch (IOException e) {
             return ApiResult.error("File upload failed: " + e.getMessage());
