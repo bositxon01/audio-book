@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Ignore dev config files ###
+src/main/resources/application-dev.yml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -12,6 +15,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.env
 
 ### IntelliJ IDEA ###
 .idea
