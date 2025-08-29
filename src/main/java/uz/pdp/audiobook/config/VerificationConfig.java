@@ -7,6 +7,7 @@ import uz.pdp.audiobook.utils.VerificationInfo;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/*Config for verification*/
 @Configuration
 public class VerificationConfig {
 
