@@ -20,7 +20,7 @@ import uz.pdp.audiobook.entity.Audiobook;
 import uz.pdp.audiobook.mapper.AudioFileMapper;
 import uz.pdp.audiobook.payload.ApiResult;
 import uz.pdp.audiobook.payload.AudioFileDTO;
-import uz.pdp.audiobook.repository.AudioBookRepository;
+import uz.pdp.audiobook.repository.AudiobookRepository;
 import uz.pdp.audiobook.repository.AudioFileRepository;
 import uz.pdp.audiobook.service.AudioFileService;
 
@@ -41,7 +41,7 @@ import java.util.UUID;
 public class AudioFileServiceImpl implements AudioFileService {
 
     private final AudioFileRepository audioFileRepository;
-    private final AudioBookRepository audioBookRepository;
+    private final AudiobookRepository audioBookRepository;
     private final AudioFileMapper audioFileMapper;
 
     private static final String AUDIO_FILE_DIRECTORY = "file/uploads/audio/";
